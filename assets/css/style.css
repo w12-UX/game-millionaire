@@ -110,6 +110,7 @@ body::before {
   cursor: pointer;
   transition: all 0.25s ease;
   letter-spacing: 1px;
+  font-family: "ZCOOL KuaiLe", "Comic Sans MS", cursive;
 }
 
 .btn-gold {
