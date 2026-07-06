@@ -933,13 +933,18 @@ body::before {
   .sidebar-left .prize-panel { padding: 6px 10px; }
   .sidebar-left .prize-panel h3 { font-size: 10px; margin-bottom: 4px; letter-spacing: 1px; }
   .sidebar-left .prize-list {
-    display: flex; flex-direction: row; gap: 3px;
-    overflow-x: auto; overflow-y: hidden;
-    padding-bottom: 4px; max-height: none;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px 6px;
+    max-height: none;
+    overflow: visible;
   }
   .sidebar-left .prize-item {
-    flex: 0 0 auto; font-size: 10px;
-    padding: 2px 6px; border-radius: 3px; white-space: nowrap;
+    font-size: 10px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    text-align: center;
+  }
   }
   .sidebar-left .prize-item.eliminated { font-size: 9px; }
   .sidebar-left .prize-list::-webkit-scrollbar { height: 3px; }
@@ -976,7 +981,6 @@ body::before {
   .box.eliminated .box-front { font-size: 10px; }
   .box.selected .box-number { font-size: 19px; }
 
-  .selected-box-area {
   .selected-box-area {
     gap: 8px;
     padding: 4px 0;
