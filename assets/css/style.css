@@ -175,12 +175,13 @@ body::before {
   min-width: 0;                     /* 防止 flex 溢出挤压侧栏 */
 }
 
-/* ===== 单个箱子 ===== */
+/* ===== 单个箱子（手提箱造型） ===== */
 .box {
   aspect-ratio: 1;
   perspective: 600px;
   cursor: pointer;
   position: relative;
+  padding-top: 6px;                 /* 为提手预留空间 */
 }
 
 .box-inner {
@@ -207,37 +208,99 @@ body::before {
   font-weight: 700;
 }
 
-/* 箱子正面（未开） */
+/* ===== 手提箱正面（未开） ===== */
 .box-front {
-  background: linear-gradient(145deg, #1a2a4a, #0d1a30);
-  border: 2px solid rgba(212, 175, 55, 0.3);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3),
-              inset 0 1px 0 rgba(212, 175, 55, 0.1);
+  background: linear-gradient(160deg, #4a3728 0%, #2c1810 50%, #1a0e08 100%);
+  border: 2px solid rgba(212, 175, 55, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4),
+              inset 0 1px 0 rgba(212, 175, 55, 0.15);
   transition: all 0.3s;
+  border-radius: 10px;
+  position: relative;
+  overflow: visible;
+}
+
+/* 手提箱提手 */
+.box-front::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  height: 8px;
+  border: 2.5px solid #d4af37;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  background: transparent;
+  box-shadow: 0 -2px 6px rgba(212, 175, 55, 0.15);
+}
+
+/* 手提箱锁扣 */
+.box-front::after {
+  content: '◆';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: #d4af37;
+  opacity: 0.6;
+  text-shadow: 0 0 6px rgba(212, 175, 55, 0.3);
 }
 
 .box-number {
-  font-size: 18px;
+  font-size: 20px;
   color: #d4af37;
   text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  z-index: 1;
+  position: relative;
+  margin-top: 2px;
 }
 
 /* 箱子未开时悬浮效果 */
 .box:not(.flipped):not(.eliminated):hover .box-front {
   border-color: #d4af37;
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2),
-              0 4px 15px rgba(0, 0, 0, 0.3);
-  transform: translateY(-3px);
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.25),
+              0 6px 20px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
 }
 
-/* 箱子背面（开箱后显示金额） */
+/* ===== 箱子背面（开箱 → 美钞绿 💵） ===== */
 .box-back {
-  background: linear-gradient(145deg, #0d1a30, #050d1a);
-  border: 2px solid #d4af37;
+  background: linear-gradient(145deg, #1a5c2a, #0d3d1a);
+  border: 2px solid #4ade80;
   transform: rotateY(180deg);
-  font-size: 11px;
-  color: #f7d875;
-  text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+  font-size: 12px;
+  color: #86efac;
+  text-shadow: 0 0 10px rgba(74, 222, 128, 0.4);
+  border-radius: 10px;
+  position: relative;
+}
+
+/* 背面美钞装饰 */
+.box-back::before {
+  content: '💵';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 10px;
+  opacity: 0.5;
+}
+
+.box-back::after {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  height: 8px;
+  border: 2px solid #4ade80;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  background: transparent;
+  opacity: 0.3;
 }
 
 .reveal-flash {
@@ -245,34 +308,35 @@ body::before {
 }
 
 @keyframes flashReveal {
-  0% { background: rgba(212, 175, 55, 0.4); }
+  0% { background: rgba(74, 222, 128, 0.4); }
   100% { background: transparent; }
 }
 
-/* 选中状态（专属箱子） */
-.box.selected {
-  /* 不需要 margin-bottom，标签改为向内嵌在底部 */
-}
-
+/* 选中状态（专属箱子 → 金色手提箱✨） */
 .box.selected .box-inner {
-  border-radius: 22px 8px 8px 22px;  /* 左半圆 + 右圆角胶囊效果 */
+  border-radius: 22px 8px 8px 22px;
 }
 
 .box.selected .box-front {
   border-color: #FFD700;
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5),
-              0 0 40px rgba(255, 215, 0, 0.2),
-              inset 0 0 15px rgba(255, 215, 0, 0.1);
-  background: linear-gradient(135deg, #FFD700, #DAA520, #B8860B);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.5),
+              0 0 50px rgba(255, 215, 0, 0.2),
+              inset 0 0 20px rgba(255, 215, 0, 0.1);
+  background: linear-gradient(160deg, #FFD700 0%, #DAA520 40%, #B8860B 100%);
+}
+
+.box.selected .box-front::after {
+  color: #5a3e00;
+  opacity: 0.8;
 }
 
 .box.selected .box-number {
   font-size: 22px;
-  color: #1a1a2e;
+  color: #3d2000;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
 }
 
-/* 「★ 我的」标签改为嵌入底部，不向外溢出 */
+/* 「★ 我的」标签嵌入底部 */
 .box.selected::after {
   content: '★ 我的';
   position: absolute;
