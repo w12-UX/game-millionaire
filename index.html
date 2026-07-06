@@ -18,7 +18,10 @@
 
     <!-- ===== 顶部工具栏 ===== -->
     <div class="top-bar">
-      <button class="btn btn-ghost" id="rulesBtn">📖 游戏规则</button>
+      <div class="top-bar-left">
+        <button class="btn btn-ghost" id="rulesBtn">📖 游戏规则</button>
+        <button class="btn btn-ghost btn-sound" id="soundBtn">🔊 音效</button>
+      </div>
       <button class="btn btn-gold" id="restartBtn">⟳ 重新开始</button>
     </div>
 
@@ -162,6 +165,7 @@
   <!-- ===== 脚本加载（按依赖顺序） ===== -->
   <script src="assets/js/data.js"></script>
   <script src="assets/js/game.js"></script>
+  <script src="assets/js/audio.js"></script>
   <script src="assets/js/ui.js"></script>
   <script>
     // 游戏入口
@@ -175,8 +179,17 @@
       document.getElementById('rulesPopup').classList.add('hidden');
     });
 
+    // 音效开关
+    document.getElementById('soundBtn').addEventListener('click', () => {
+      const muted = Audio.toggleMute();
+      document.getElementById('soundBtn').textContent = muted ? '🔇 静音' : '🔊 音效';
+      if (!muted) Audio.startBGM();
+    });
+
     // 初始化 UI（必须在 game 实例创建之后）
     UI.init();
+    // 启动背景音乐
+    Audio.startBGM();
   </script>
 
 </body>

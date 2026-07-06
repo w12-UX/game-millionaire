@@ -67,6 +67,7 @@ const UI = {
     const result = game.acceptDeal();
     if (!result) return;
 
+    Audio.playDeal();
     this.closeAllPopups();
     setTimeout(() => {
       this.updateBoxStates();
@@ -81,6 +82,7 @@ const UI = {
     const ok = game.rejectDeal();
     if (!ok) return;
 
+    Audio.playNoDeal();
     this.closeAllPopups();
     const state = game.getState();
     if (state.phase === GAME_PHASE.FINAL_CHOICE) {
@@ -97,6 +99,7 @@ const UI = {
     const result = game.finalChoice(shouldSwap);
     if (!result) return;
 
+    Audio.playFinalReveal();
     this.closeAllPopups();
     setTimeout(() => {
       this.updateBoxStates();
@@ -165,6 +168,7 @@ const UI = {
         this.updateBoxStates();
         this.updateStatus();
         this.updateGuide('点击箱子完成本轮开箱');
+        Audio.playSelectBox();
       }
       return;
     }
@@ -200,6 +204,7 @@ const UI = {
     setTimeout(() => front.classList.remove('reveal-flash'), 500);
     boxEl.classList.add('shake');
     setTimeout(() => boxEl.classList.remove('shake'), 350);
+    Audio.playOpenBox();
   },
 
   /** 更新箱子样式（用 dataset.index 匹配） */
@@ -285,6 +290,7 @@ const UI = {
     this.els.offerPopup.classList.remove('hidden');
     this.els.offerPopup.classList.add('pop-in');
     this.updateStatus();
+    Audio.playBankerCall();
   },
 
   /** 显示终极抉择弹窗 */
@@ -293,6 +299,7 @@ const UI = {
     this.els.finalAmount.textContent = `${this.formatAmount(remaining[0])} 或 ${this.formatAmount(remaining[1])}`;
     this.els.finalPopup.classList.remove('hidden');
     this.els.finalPopup.classList.add('pop-in');
+    Audio.playFinalDrum();
   },
 
   /** 显示游戏结算弹窗 */

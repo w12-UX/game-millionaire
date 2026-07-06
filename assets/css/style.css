@@ -90,6 +90,17 @@ body::before {
   padding: 6px 0 10px;
 }
 
+.top-bar-left {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-sound {
+  font-size: 13px;
+  padding: 6px 14px;
+}
+
 .btn {
   padding: 10px 28px;
   border: none;
