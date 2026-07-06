@@ -18,8 +18,8 @@
 
     <!-- ===== 顶部工具栏 ===== -->
     <div class="top-bar">
-      <button class="btn btn-gold" id="restartBtn">⟳ 重新开始</button>
       <button class="btn btn-ghost" id="rulesBtn">📖 游戏规则</button>
+      <button class="btn btn-gold" id="restartBtn">⟳ 重新开始</button>
     </div>
 
     <!-- ===== 新手引导 ===== -->
@@ -30,19 +30,30 @@
     <!-- ===== 主体区域 ===== -->
     <div class="main-area">
 
-      <!-- 专属箱展示区（选中后出现） -->
-      <div class="selected-box-area hidden" id="selectedBoxArea">
-        <div class="selected-box-label">🎯 我的专属箱</div>
-        <div class="selected-box-slot" id="selectedBoxSlot"></div>
+      <!-- 左侧：奖金池 -->
+      <aside class="sidebar sidebar-left">
+        <div class="prize-panel">
+          <h3>💰 奖金池</h3>
+          <div class="prize-list" id="prizeList"></div>
+        </div>
+      </aside>
+
+      <!-- 中间：专属箱 + 箱子网格 -->
+      <div class="center-area">
+
+        <!-- 专属箱展示区（选中后出现） -->
+        <div class="selected-box-area hidden" id="selectedBoxArea">
+          <div class="selected-box-label">🎯 我的专属箱</div>
+          <div class="selected-box-slot" id="selectedBoxSlot"></div>
+        </div>
+
+        <!-- 箱子网格 -->
+        <div class="boxes-grid" id="boxesGrid"></div>
+
       </div>
 
-      <!-- 箱子网格 -->
-      <div class="boxes-grid" id="boxesGrid"></div>
-
-      <!-- 侧边栏 -->
-      <aside class="sidebar">
-
-        <!-- 状态面板 -->
+      <!-- 右侧：游戏状态 -->
+      <aside class="sidebar sidebar-right">
         <div class="status-panel">
           <h3>📊 游戏状态</h3>
           <div class="status-item">
@@ -58,14 +69,8 @@
             <span class="value" id="statusOffer">—</span>
           </div>
         </div>
-
-        <!-- 奖金池 -->
-        <div class="prize-panel">
-          <h3>💰 奖金池</h3>
-          <div class="prize-list" id="prizeList"></div>
-        </div>
-
       </aside>
+
     </div>
 
     <!-- ===== 底部 ===== -->

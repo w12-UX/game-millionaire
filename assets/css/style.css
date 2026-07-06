@@ -156,15 +156,14 @@ body::before {
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== 专属箱展示区（选中后左侧展示） ===== */
+/* ===== 专属箱展示区（选中后显示在网格上方） ===== */
 .selected-box-area {
   display: none;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 6px;
-  width: 90px;
-  flex-shrink: 0;
-  padding-top: 2px;
+  gap: 10px;
+  padding: 4px 0 2px;
+  justify-content: center;
 }
 
 .selected-box-area.hidden {
@@ -252,8 +251,17 @@ body::before {
 }
 .main-area {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   align-items: flex-start;
+}
+
+/* 中间区域：左侧专属箱 + 网格 */
+.center-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
 }
 
 /* ===== 箱子网格 ===== */
@@ -520,14 +528,17 @@ body::before {
   80% { transform: translateX(2px); }
 }
 
-/* ===== 侧边栏（奖金池 + 状态） ===== */
-.sidebar {
-  width: 240px;
-  min-width: 200px;
+/* ===== 侧边栏（左：奖金池 / 右：状态） ===== */
+.sidebar-left {
+  width: 210px;
+  min-width: 170px;
   flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+}
+
+.sidebar-right {
+  width: 200px;
+  min-width: 160px;
+  flex-shrink: 0;
 }
 
 /* 状态信息面板 */
@@ -798,12 +809,11 @@ body::before {
 /* ===== 响应式 ===== */
 @media (max-width: 1024px) {
   .main-area {
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
-  .sidebar {
+  .sidebar-left, .sidebar-right {
     width: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
+    min-width: 0;
   }
   .status-panel, .prize-panel {
     flex: 1;
