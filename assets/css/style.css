@@ -250,28 +250,44 @@ body::before {
 }
 
 /* 选中状态（专属箱子） */
+.box.selected {
+  margin-bottom: 28px;              /* 为底部「★ 我的」标签预留空间 */
+}
+
+.box.selected .box-inner {
+  border-radius: 30px 12px 12px 30px;  /* 左半圆 + 右圆角胶囊效果 */
+}
+
 .box.selected .box-front {
-  border-color: #f7d875;
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.4),
-              inset 0 0 20px rgba(212, 175, 55, 0.1);
-  background: linear-gradient(145deg, #1f2f5a, #0d1a30);
+  border-color: #FFD700;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.5),
+              0 0 60px rgba(255, 215, 0, 0.2),
+              inset 0 0 25px rgba(255, 215, 0, 0.1);
+  background: linear-gradient(135deg, #FFD700, #DAA520, #B8860B);
 }
 
 .box.selected .box-number {
   font-size: 28px;
-  color: #f7d875;
+  color: #1a1a2e;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
 }
 
 .box.selected::after {
   content: '★ 我的';
   position: absolute;
-  bottom: -22px;
+  bottom: -24px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 11px;
-  color: #d4af37;
-  letter-spacing: 1px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #FFD700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+  letter-spacing: 2px;
   white-space: nowrap;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 /* 已淘汰状态 */
@@ -472,15 +488,17 @@ body::before {
 
 .popup-actions {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   justify-content: center;
   margin-top: 24px;
+  flex-wrap: nowrap;
 }
 
 .popup-actions .btn {
-  min-width: 140px;
-  padding: 14px 28px;
-  font-size: 16px;
+  min-width: 120px;
+  padding: 12px 18px;
+  font-size: 15px;
+  white-space: nowrap;
 }
 
 .btn-deal {

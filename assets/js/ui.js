@@ -47,12 +47,59 @@ const UI = {
 
   /** 绑定事件 */
   bindEvents() {
-    this.els.dealBtn.addEventListener('click', () => game.acceptDeal());
-    this.els.noDealBtn.addEventListener('click', () => game.rejectDeal());
-    this.els.swapBtn.addEventListener('click', () => game.finalChoice(true));
-    this.els.keepBtn.addEventListener('click', () => game.finalChoice(false));
+    // Deal / No Deal
+    this.els.dealBtn.addEventListener('click', () => this.handleDeal());
+    this.els.noDealBtn.addEventListener('click', () => this.handleNoDeal());
+    // 终极抉择
+    this.els.swapBtn.addEventListener('click', () => this.handleFinalChoice(true));
+    this.els.keepBtn.addEventListener('click', () => this.handleFinalChoice(false));
+    // 重新开始
     this.els.restartBtn.addEventListener('click', () => this.resetGame());
     this.els.restartBtn2.addEventListener('click', () => this.resetGame());
+  },
+
+  /** 处理 Deal（成交） */
+  handleDeal() {
+    const result = game.acceptDeal();
+    if (!result) return;
+
+    this.closeAllPopups();
+    setTimeout(() => {
+      this.updateBoxStates();
+      this.updateStatus();
+      this.showResult(result);
+      this.updateGuide('游戏结束，点击「重新开始」再来一局');
+    }, 300);
+  },
+
+  /** 处理 No Deal（继续） */
+  handleNoDeal() {
+    const ok = game.rejectDeal();
+    if (!ok) return;
+
+    this.closeAllPopups();
+    const state = game.getState();
+    if (state.phase === GAME_PHASE.FINAL_CHOICE) {
+      setTimeout(() => this.showFinalChoice(), 300);
+      this.updateGuide('只剩最后两箱，请做出终极抉择');
+    } else {
+      this.updateGuide('点击箱子完成本轮开箱');
+    }
+    this.updateStatus();
+  },
+
+  /** 处理终极抉择 */
+  handleFinalChoice(shouldSwap) {
+    const result = game.finalChoice(shouldSwap);
+    if (!result) return;
+
+    this.closeAllPopups();
+    setTimeout(() => {
+      this.updateBoxStates();
+      this.updateStatus();
+      this.showResult(result);
+      this.updateGuide('游戏结束，点击「重新开始」再来一局');
+    }, 300);
   },
 
   /** 重置游戏 */
@@ -269,59 +316,4 @@ const UI = {
     if (amount < 1) return `$${amount}`;
     return `$${amount}`;
   }
-};
-
-/**
- * 挂载游戏事件钩子（在 game 实例创建后调用）
- * 将 game.js 的纯逻辑操作与 ui.js 的视图反馈桥接起来
- */
-UI.setupGameHooks = function(gameInstance) {
-  const game = gameInstance;
-
-  const origAccept = game.acceptDeal.bind(game);
-  game.acceptDeal = function() {
-    const result = origAccept();
-    if (result) {
-      UI.closeAllPopups();
-      setTimeout(() => {
-        UI.updateBoxStates();
-        UI.updateStatus();
-        UI.showResult(result);
-        UI.updateGuide('游戏结束，点击「重新开始」再来一局');
-      }, 300);
-    }
-    return result;
-  };
-
-  const origReject = game.rejectDeal.bind(game);
-  game.rejectDeal = function() {
-    const ok = origReject();
-    if (ok) {
-      UI.closeAllPopups();
-      const state = game.getState();
-      if (state.phase === GAME_PHASE.FINAL_CHOICE) {
-        setTimeout(() => UI.showFinalChoice(), 300);
-        UI.updateGuide('只剩最后两箱，请做出终极抉择');
-      } else {
-        UI.updateGuide('点击箱子完成本轮开箱');
-      }
-      UI.updateStatus();
-    }
-    return ok;
-  };
-
-  const origFinal = game.finalChoice.bind(game);
-  game.finalChoice = function(shouldSwap) {
-    const result = origFinal(shouldSwap);
-    if (result) {
-      UI.closeAllPopups();
-      setTimeout(() => {
-        UI.updateBoxStates();
-        UI.updateStatus();
-        UI.showResult(result);
-        UI.updateGuide('游戏结束，点击「重新开始」再来一局');
-      }, 300);
-    }
-    return result;
-  };
 };
