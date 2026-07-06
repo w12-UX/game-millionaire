@@ -24,7 +24,8 @@ const UI = {
       boxesGrid: document.getElementById('boxesGrid'),
       selectedBoxArea: document.getElementById('selectedBoxArea'),
       selectedBoxSlot: document.getElementById('selectedBoxSlot'),
-      prizeList: document.getElementById("prizeList"),\n      prizeJackpot: document.getElementById("prizeJackpot"),
+      prizeList: document.getElementById("prizeList"),
+      prizeJackpot: document.getElementById("prizeJackpot"),
       statusRound: document.getElementById('statusRound'),
       statusOpened: document.getElementById('statusOpened'),
       statusOffer: document.getElementById('statusOffer'),
@@ -261,7 +262,6 @@ const UI = {
         el.classList.add('eliminated');
       }
     });
-  },
     if (this.els.prizeJackpot) {
       var jAmt = parseFloat(this.els.prizeJackpot.dataset.amount);
       if (eliminated.includes(jAmt)) {
@@ -270,7 +270,8 @@ const UI = {
         this.els.prizeJackpot.classList.remove("eliminated");
       }
     }
-
+  },
+  
   /** 更新状态提示区 */
   updateStatus() {
     const state = game.getState();
