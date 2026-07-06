@@ -325,15 +325,9 @@ const UI = {
     });
   },
 
-  /** 格式化金额显示 */
+  /** 格式化金额显示 — 全 $ 逗号统一格式 */
   formatAmount(amount) {
-    // ≥ 1万 统一显示为 X万
-    if (amount >= 10000) {
-      const wan = amount / 10000;
-      if (wan % 1 === 0) return `$${wan}万`;
-      return `$${wan.toFixed(1).replace(/\.0$/, '')}万`;
-    }
-    // ≥ 1000 逗号分隔
+    // ≥ 1,000 → $1,000 或 $1,000,000
     if (amount >= 1000) return `$${amount.toLocaleString()}`;
     // 特殊小金额
     if (amount === 0.01) return '$0.01';

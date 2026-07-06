@@ -139,10 +139,11 @@ body::before {
   font-size: 14px;
   color: #f7d875;
   letter-spacing: 1px;
-  padding: 5px 18px;
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  padding: 6px 22px;
+  border: 1.5px solid rgba(212, 175, 55, 0.5);
   border-radius: 30px;
-  background: rgba(212, 175, 55, 0.05);
+  background: rgba(212, 175, 55, 0.06);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.08);
   transition: all 0.3s;
 }
 
@@ -267,14 +268,12 @@ body::before {
   border: 1px solid rgba(212, 175, 55, 0.1);
   border-radius: 10px;
   min-width: 0;
-  max-width: 780px;
   transition: grid-template-columns 0.5s ease;
 }
 
 /* 选中专属箱后 → 剩余 25 箱排 5×5 */
 .main-area.has-selected .boxes-grid {
   grid-template-columns: repeat(5, 1fr);
-  max-width: 540px;
 }
 
 /* ===== 单个箱子（手提箱造型） ===== */
@@ -523,8 +522,8 @@ body::before {
 
 /* ===== 侧边栏（奖金池 + 状态） ===== */
 .sidebar {
-  width: 190px;
-  min-width: 170px;
+  width: 240px;
+  min-width: 200px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -536,22 +535,22 @@ body::before {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(212, 175, 55, 0.15);
   border-radius: 10px;
-  padding: 10px;
+  padding: 14px 16px;
 }
 
 .status-panel h3 {
   color: #d4af37;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 2px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   text-align: center;
 }
 
 .status-item {
   display: flex;
   justify-content: space-between;
-  padding: 4px 0;
-  font-size: 12px;
+  padding: 6px 0;
+  font-size: 13px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -573,33 +572,35 @@ body::before {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(212, 175, 55, 0.15);
   border-radius: 10px;
-  padding: 10px;
+  padding: 14px 16px;
   flex: 1;
 }
 
 .prize-panel h3 {
   color: #d4af37;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 2px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   text-align: center;
 }
 
 .prize-list {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  max-height: 420px;
+  gap: 3px;
+  max-height: 440px;
   overflow-y: auto;
 }
 
 .prize-item {
-  padding: 3px 8px;
-  font-size: 11px;
+  display: flex;
+  justify-content: center;
+  padding: 4px 10px;
+  font-size: 12.5px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: rgba(255, 255, 255, 0.8);
-  border-radius: 3px;
+  border-radius: 4px;
   transition: all 0.3s;
 }
 
@@ -611,19 +612,23 @@ body::before {
 
 .prize-item:not(.eliminated) {
   color: #f7d875;
-  background: rgba(212, 175, 55, 0.05);
+  background: rgba(212, 175, 55, 0.06);
 }
 
 /* 滚动条美化 */
 .prize-list::-webkit-scrollbar {
-  width: 4px;
+  width: 5px;
 }
 .prize-list::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 3px;
 }
 .prize-list::-webkit-scrollbar-thumb {
-  background: rgba(212, 175, 55, 0.3);
-  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(212, 175, 55, 0.4), rgba(212, 175, 55, 0.2));
+  border-radius: 3px;
+}
+.prize-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.5);
 }
 
 /* ===== 弹窗 ===== */
