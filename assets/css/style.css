@@ -156,14 +156,14 @@ body::before {
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== 专属箱展示区（选中后显示在网格上方） ===== */
+/* ===== 专属箱展示区（居中悬浮条） ===== */
 .selected-box-area {
   display: none;
   flex-direction: row;
   align-items: center;
-  gap: 10px;
-  padding: 4px 0 2px;
   justify-content: center;
+  gap: 14px;
+  padding: 8px 0;
 }
 
 .selected-box-area.hidden {
@@ -175,12 +175,11 @@ body::before {
 }
 
 .selected-box-label {
-  font-size: 11px;
+  font-size: 13px;
   color: #FFD700;
-  letter-spacing: 1px;
-  text-align: center;
-  font-weight: 600;
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+  letter-spacing: 2px;
+  font-weight: 700;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.35);
   white-space: nowrap;
 }
 
@@ -478,11 +477,15 @@ body::before {
   white-space: nowrap;
 }
 
-/* ===== 专属箱展示区（适配固定高度箱子） ===== */
+/* ===== 专属箱展示区 ===== */
 .selected-box-slot {
-  width: 72px;
-  height: 72px;
+  width: 80px;
+  height: 80px;
   position: relative;
+  background: rgba(212, 175, 55, 0.06);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 12px;
+  padding: 4px;
 }
 
 .selected-box-slot .box {
@@ -501,17 +504,17 @@ body::before {
 }
 
 .selected-box-slot .box.selected::after {
-  display: none;                /* 左侧专属箱不显示 ★ 标签 */
+  display: none;
 }
 
 /* 专属箱进入动画 */
 .selected-box-slot .box {
-  animation: slideToLeft 0.5s ease;
+  animation: popToCenter 0.5s ease;
 }
 
-@keyframes slideToLeft {
-  0% { transform: scale(0.7); opacity: 0.2; }
-  50% { transform: scale(1.08); }
+@keyframes popToCenter {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.1); }
   100% { transform: scale(1); opacity: 1; }
 }
 
