@@ -972,10 +972,6 @@ body::before {
   .main-area.has-selected .boxes-grid {
     grid-template-columns: repeat(5, 1fr);
   }
-  .main-area.has-selected .sidebar-left .prize-panel,
-  .main-area.has-selected .sidebar-right .status-panel {
-    margin-top: 100px;
-  }
 
   .box { padding-top: 6px; }
   .box-inner { height: calc(100% - 6px); }
