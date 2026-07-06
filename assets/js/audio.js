@@ -169,40 +169,75 @@ const Audio = {
     setTimeout(() => this.playTone(1568, 0.6, 'triangle', 0.25), 700);
   },
 
-  // ========== 背景音乐 ==========
+  // ========== 背景音乐（综艺主题纯音乐） ==========
 
-  /** 开始背景音乐（综艺悬疑氛围，循环播放） */
+  /** 开始背景音乐 — C 小调优雅和弦循环 */
   startBGM() {
     if (this.bgmPlaying || this.muted) return;
     this.bgmPlaying = true;
 
     const ctx = this.activate();
     this.bgmGain = ctx.createGain();
-    this.bgmGain.gain.setValueAtTime(0.15, ctx.currentTime);
+    this.bgmGain.gain.setValueAtTime(0.18, ctx.currentTime);
     this.bgmGain.connect(ctx.destination);
 
-    // 低频脉搏（4 秒乐句循环）
-    let noteIndex = 0;
-    const bassNotes = [65.41, 65.41, 73.42, 73.42, 82.41, 77.78, 65.41, 65.41];
+    // 和弦进行：Cm → Ab → Eb → Bb（递进感）
+    const chords = [
+      [130.81, 155.56, 196.00, 261.63],
+      [207.65, 261.63, 311.13, 415.30],
+      [155.56, 196.00, 233.08, 311.13],
+      [233.08, 293.66, 349.23, 466.16],
+    ];
 
-    const playBass = () => {
+    let chordIndex = 0;
+
+    const playBGM = () => {
       if (!this.bgmPlaying) return;
       const now = ctx.currentTime;
-      [0, 0.5, 1, 1.5].forEach((offset) => {
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.type = 'triangle';
-        o.frequency.setValueAtTime(bassNotes[(noteIndex++) % bassNotes.length], now + offset);
-        g.gain.setValueAtTime(0.08, now + offset);
-        g.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.35);
-        o.connect(g);
-        g.connect(this.bgmGain);
-        o.start(now + offset);
-        o.stop(now + offset + 0.35);
+      const chord = chords[chordIndex % chords.length];
+
+      // 琶音：和弦 4 音依次奏响（三角波 + 泛音）
+      chord.forEach((freq, i) => {
+        const t = i * 0.6;
+        const o1 = ctx.createOscillator();
+        const g1 = ctx.createGain();
+        o1.type = 'triangle';
+        o1.frequency.setValueAtTime(freq, now + t);
+        g1.gain.setValueAtTime(0.09, now + t);
+        g1.gain.linearRampToValueAtTime(0.001, now + t + 0.55);
+        o1.connect(g1);
+        g1.connect(this.bgmGain);
+        o1.start(now + t);
+        o1.stop(now + t + 0.55);
+
+        const o2 = ctx.createOscillator();
+        const g2 = ctx.createGain();
+        o2.type = 'sine';
+        o2.frequency.setValueAtTime(freq * 2, now + t);
+        g2.gain.setValueAtTime(0.02, now + t);
+        g2.gain.linearRampToValueAtTime(0.001, now + t + 0.5);
+        o2.connect(g2);
+        g2.connect(this.bgmGain);
+        o2.start(now + t);
+        o2.stop(now + t + 0.5);
       });
-      this.bgmInterval = setTimeout(playBass, 4000);
+
+      // 低音根基
+      const oB = ctx.createOscillator();
+      const gB = ctx.createGain();
+      oB.type = 'sine';
+      oB.frequency.setValueAtTime(chord[0] / 2, now);
+      gB.gain.setValueAtTime(0.06, now);
+      gB.gain.linearRampToValueAtTime(0.001, now + 2);
+      oB.connect(gB);
+      gB.connect(this.bgmGain);
+      oB.start(now);
+      oB.stop(now + 2);
+
+      chordIndex++;
+      this.bgmInterval = setTimeout(playBGM, 2400);
     };
-    playBass();
+    playBGM();
   },
 
   /** 停止背景音乐 */
