@@ -20,12 +20,12 @@ const LATER_ROUNDS_OPEN_COUNT = 1;
 
 // 银行家报价算法参数
 const BANKER_CONFIG = {
-  // 前期（1-3 轮）：压价
-  earlyCoefficient: { min: 0.6, max: 0.7 },
-  // 中期（4-6 轮）：趋近
-  midCoefficient: { min: 0.8, max: 0.9 },
-  // 后期（7 轮起）：溢价
-  lateCoefficient: { min: 1.0, max: 1.15 },
+  // 前期（1-3 轮）：狠压价，8%-20% 均值，制造心理压迫
+  earlyCoefficient: { min: 0.08, max: 0.20 },
+  // 中期（4-6 轮）：逐步抬价，30%-55%
+  midCoefficient: { min: 0.30, max: 0.55 },
+  // 后期（7 轮起）：接近真实，60%-90%
+  lateCoefficient: { min: 0.60, max: 0.90 },
   // 固定随机浮动 ±8%
   fluctuation: 0.08
 };
