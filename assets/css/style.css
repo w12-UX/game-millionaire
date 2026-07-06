@@ -166,12 +166,13 @@ body::before {
 .boxes-grid {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  gap: 8px;
-  padding: 12px;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  padding: 10px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(212, 175, 55, 0.1);
   border-radius: 12px;
+  min-width: 0;                     /* 防止 flex 溢出挤压侧栏 */
 }
 
 /* ===== 单个箱子 ===== */
@@ -250,7 +251,7 @@ body::before {
 
 /* 选中状态（专属箱子） */
 .box.selected {
-  margin-bottom: 22px;              /* 为底部「★ 我的」标签预留空间 */
+  /* 不需要 margin-bottom，标签改为向内嵌在底部 */
 }
 
 .box.selected .box-inner {
@@ -271,22 +272,22 @@ body::before {
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
 }
 
+/* 「★ 我的」标签改为嵌入底部，不向外溢出 */
 .box.selected::after {
   content: '★ 我的';
   position: absolute;
-  bottom: -20px;
+  bottom: 2px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 700;
-  color: #FFD700;
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  color: #5a3e00;
   letter-spacing: 1px;
   white-space: nowrap;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 1px 10px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  background: rgba(255, 215, 0, 0.85);
+  padding: 1px 8px;
+  border-radius: 6px;
+  z-index: 2;
 }
 
 /* 已淘汰状态 */
@@ -320,6 +321,7 @@ body::before {
 /* ===== 侧边栏（奖金池 + 状态） ===== */
 .sidebar {
   width: 190px;
+  min-width: 170px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
