@@ -887,9 +887,8 @@ body::before {
 /* ===== 响应式：手机（≤768px） ===== */
 @media (max-width: 768px) {
 
-  /* ── 撑满视口高度 ── */
   .game-container {
-    padding: 8px;
+    padding: 10px 12px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -898,65 +897,13 @@ body::before {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
   }
   .center-area {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-  }
-  .boxes-grid {
-    flex: 1;
-  }
-  }
-  .header {
-    padding: 8px 0 4px;
-  }
-  .header h1 {
-    font-size: 22px;
-    letter-spacing: 2px;
-  }
-  .header .subtitle {
-    font-size: 9px;
-    letter-spacing: 3px;
-    margin-top: 2px;
-  }
-  .header::after {
-    margin: 6px auto 0;
-  }
-
-  /* ── 顶栏 ── */
-  .top-bar {
-    padding: 4px 0 6px;
-    gap: 4px;
-  }
-  .top-bar-left {
-    gap: 4px;
-  }
-  .btn {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
-  .btn-sound {
-    font-size: 10px;
-    padding: 4px 8px;
-  }
-
-  /* ── 引导 ── */
-  .guide-bar {
-    padding: 2px 0;
-    margin-bottom: 2px;
-  }
-  .guide-text {
-    font-size: 11px;
-    padding: 2px 10px;
-  }
-
-  /* ── 主体瀑布流：奖金池 → 网格 → 状态 ── */
-  .main-area {
-    flex-direction: column;
-    gap: 6px;
+    gap: 8px;
   }
   .sidebar-left, .sidebar-right {
     width: 100%;
@@ -966,166 +913,74 @@ body::before {
   .center-area  { order: 1; }
   .sidebar-right { order: 2; }
 
-  /* ── 奖金池（紧凑横条） ── */
-  .sidebar-left .prize-panel {
-    padding: 6px 10px;
-    max-height: 84px;
-  }
-  .sidebar-left .prize-panel h3 {
-    font-size: 10px;
-    margin-bottom: 4px;
-    letter-spacing: 1px;
-  }
+  .header { padding: 6px 0 4px; }
+  .header h1 { font-size: 24px; letter-spacing: 3px; }
+  .header .subtitle { font-size: 10px; letter-spacing: 4px; margin-top: 2px; }
+  .header::after { margin: 6px auto 0; }
+  .top-bar { padding: 4px 0 6px; gap: 4px; }
+  .top-bar-left { gap: 4px; }
+  .btn { padding: 6px 12px; font-size: 12px; }
+  .btn-sound { font-size: 10px; padding: 4px 8px; }
+  .guide-bar { padding: 2px 0; margin: 0; }
+  .guide-text { font-size: 11px; padding: 2px 10px; }
+
+  .sidebar-left .prize-panel { padding: 6px 10px; }
+  .sidebar-left .prize-panel h3 { font-size: 10px; margin-bottom: 4px; letter-spacing: 1px; }
   .sidebar-left .prize-list {
-    max-height: 60px;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 1px 4px;
-    overflow-y: hidden;
+    display: flex; flex-direction: row; gap: 3px;
+    overflow-x: auto; overflow-y: hidden;
+    padding-bottom: 4px; max-height: none;
   }
   .sidebar-left .prize-item {
-    font-size: 8px;
-    padding: 1px 2px;
-    border-radius: 2px;
+    flex: 0 0 auto; font-size: 10px;
+    padding: 2px 6px; border-radius: 3px; white-space: nowrap;
   }
-  .sidebar-left .prize-item.eliminated {
-    font-size: 7px;
-  }
+  .sidebar-left .prize-item.eliminated { font-size: 9px; }
+  .sidebar-left .prize-list::-webkit-scrollbar { height: 3px; }
+  .sidebar-left .prize-list::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.3); border-radius: 2px; }
 
-  /* ── 状态（紧凑横条） ── */
-  .sidebar-right .status-panel {
-    padding: 6px 10px;
-  }
-  .sidebar-right .status-panel h3 {
-    display: none;           /* 手机端隐藏标题，节省空间 */
-  }
-  .sidebar-right .status-item {
-    font-size: 11px;
-    padding: 3px 0;
-  }
+  .sidebar-right .status-panel { padding: 6px 10px; }
+  .sidebar-right .status-panel h3 { display: none; }
+  .sidebar-right .status-item { font-size: 12px; padding: 4px 0; }
 
-  /* ── 网格 ── */
-  .center-area {
-    gap: 6px;
-  }
-
-  /* 选箱前 7 列，选箱后 5 列 */
   .boxes-grid {
-    grid-template-columns: repeat(7, 1fr);
-    grid-auto-rows: 64px;
-    gap: 4px;
-    padding: 6px;
+    flex: 1;
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: 76px;
+    gap: 5px;
+    padding: 8px;
     border-radius: 8px;
   }
   .main-area.has-selected .boxes-grid {
     grid-template-columns: repeat(5, 1fr);
   }
 
-  /* ── 箱体 ── */
-  .box {
-    padding-top: 5px;
-  }
-  .box-inner {
-    height: calc(100% - 5px);
-  }
-  .box-number {
-    font-size: 13px;
-  }
-  .box-front {
-    border-radius: 5px;
-    border-width: 1.5px;
-  }
-  .box-front::before {
-    top: -5px;
-    height: 4px;
-    width: 38%;
-    border-width: 1.5px;
-    border-radius: 4px 4px 0 0;
-  }
-  .box-front::after {
-    font-size: 8px;
-  }
-  .box-back {
-    font-size: 8px;
-    border-radius: 5px;
-    border-width: 1.5px;
-  }
-  .box-back::after {
-    font-size: 6px;
-    top: 1px;
-    right: 3px;
-  }
-  .box.eliminated .box-front {
-    font-size: 9px;
-  }
-  .box.selected .box-number {
-    font-size: 16px;
-  }
+  .box { padding-top: 6px; }
+  .box-inner { height: calc(100% - 6px); }
+  .box-number { font-size: 17px; }
+  .box-front { border-radius: 6px; border-width: 1.5px; }
+  .box-front::before { top: -6px; height: 5px; width: 40%; border-width: 1.5px; border-radius: 5px 5px 0 0; }
+  .box-front::after { font-size: 10px; }
+  .box-back { font-size: 10px; border-radius: 6px; border-width: 1.5px; }
+  .box.eliminated .box-front { font-size: 10px; }
+  .box.selected .box-number { font-size: 19px; }
 
-  /* ── 专属箱 ── */
-  .selected-box-area {
-    gap: 6px;
-    padding: 2px 0;
-  }
-  .selected-box-label {
-    font-size: 10px;
-  }
-  .selected-box-slot {
-    width: 50px;
-    height: 50px;
-    padding: 2px;
-    border-radius: 8px;
-  }
-  .selected-box-slot .box {
-    padding-top: 4px;
-  }
-  .selected-box-slot .box-inner {
-    height: calc(100% - 4px);
-  }
-  .selected-box-slot .box.selected .box-number {
-    font-size: 15px;
-  }
-  .box.selected::after {
-    font-size: 5px;
-    padding: 0 3px;
-    bottom: 0;
-  }
+  .selected-box-area { gap: 8px; padding: 4px 0; }
+  .selected-box-label { font-size: 11px; }
+  .selected-box-slot { width: 60px; height: 60px; padding: 3px; border-radius: 10px; }
+  .selected-box-slot .box { padding-top: 5px; }
+  .selected-box-slot .box-inner { height: calc(100% - 5px); }
+  .selected-box-slot .box.selected .box-number { font-size: 18px; }
+  .box.selected::after { font-size: 6px; padding: 0 4px; }
 
-  /* ── 弹窗 ── */
-  .popup {
-    padding: 16px 14px;
-    max-width: 300px;
-  }
-  .popup h2 {
-    font-size: 20px;
-  }
-  .popup .amount {
-    font-size: 28px;
-    margin: 8px 0;
-  }
-  .popup .popup-sub {
-    font-size: 11px;
-    margin-bottom: 10px;
-  }
-  .popup-actions {
-    gap: 8px;
-    margin-top: 14px;
-  }
-  .popup-actions .btn {
-    min-width: 80px;
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-  .result-title {
-    font-size: 22px;
-  }
-  .result-row {
-    font-size: 12px;
-    padding: 5px 0;
-  }
+  .popup { padding: 20px 16px; max-width: 320px; }
+  .popup h2 { font-size: 22px; }
+  .popup .amount { font-size: 32px; margin: 10px 0; }
+  .popup .popup-sub { font-size: 12px; margin-bottom: 12px; }
+  .popup-actions { gap: 10px; margin-top: 16px; }
+  .popup-actions .btn { min-width: 90px; padding: 10px 14px; font-size: 13px; }
+  .result-title { font-size: 24px; }
+  .result-row { font-size: 13px; padding: 6px 0; }
 
-  /* ── 底部 ── */
-  .footer {
-    padding: 8px 0 10px;
-    font-size: 8px;
-  }
+  .footer { padding: 8px 0 10px; font-size: 9px; }
 }
