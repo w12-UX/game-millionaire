@@ -24,7 +24,7 @@ const UI = {
       boxesGrid: document.getElementById('boxesGrid'),
       selectedBoxArea: document.getElementById('selectedBoxArea'),
       selectedBoxSlot: document.getElementById('selectedBoxSlot'),
-      prizeList: document.getElementById('prizeList'),
+      prizeList: document.getElementById("prizeList"),\n      prizeJackpot: document.getElementById("prizeJackpot"),
       statusRound: document.getElementById('statusRound'),
       statusOpened: document.getElementById('statusOpened'),
       statusOffer: document.getElementById('statusOffer'),
@@ -235,14 +235,18 @@ const UI = {
   /** 渲染奖金池侧边栏 */
   renderPrizeList() {
     const list = this.els.prizeList;
-    list.innerHTML = '';
-    AMOUNTS.forEach(amount => {
-      const div = document.createElement('div');
-      div.className = 'prize-item';
+    list.innerHTML = "";
+    AMOUNTS.slice(0, 25).forEach(amount => {
+      const div = document.createElement("div");
+      div.className = "prize-item";
       div.dataset.amount = amount;
       div.textContent = this.formatAmount(amount);
       list.appendChild(div);
     });
+    if (this.els.prizeJackpot) {
+      this.els.prizeJackpot.textContent = this.formatAmount(AMOUNTS[25]);
+      this.els.prizeJackpot.dataset.amount = AMOUNTS[25];
+    }
   },
 
   /** 更新奖金池状态（已淘汰的划掉） */
@@ -258,6 +262,14 @@ const UI = {
       }
     });
   },
+    if (this.els.prizeJackpot) {
+      var jAmt = parseFloat(this.els.prizeJackpot.dataset.amount);
+      if (eliminated.includes(jAmt)) {
+        this.els.prizeJackpot.classList.add("eliminated");
+      } else {
+        this.els.prizeJackpot.classList.remove("eliminated");
+      }
+    }
 
   /** 更新状态提示区 */
   updateStatus() {

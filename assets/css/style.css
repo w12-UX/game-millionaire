@@ -635,6 +635,23 @@ body::before {
   color: #f7d875;
   background: rgba(212, 175, 55, 0.06);
 }
+n.prize-jackpot {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 900;
+  color: #FFD700;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border-top: 2px solid rgba(212, 175, 55, 0.3);
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+  letter-spacing: 2px;
+  transition: all 0.3s;
+}
+.prize-jackpot.eliminated {
+  color: rgba(255, 255, 255, 0.15);
+  text-decoration: line-through;
+  text-shadow: none;
+}
 
 /* 滚动条美化 */
 .prize-list::-webkit-scrollbar {
