@@ -185,26 +185,24 @@ const UI = {
     }
   },
 
-  /** 翻转箱子动画并显示金额 */
+  /** 打开箱子：在前脸显示金额（不用3D翻转，彻底避免偏移） */
   flipBox(index, amount) {
     const boxEl = this.els.boxesGrid.querySelector(`.box[data-index="${index}"]`);
     if (!boxEl) return;
-    boxEl.classList.add('flipped');
 
-    // 金额高亮闪烁
-    const back = boxEl.querySelector('.box-back');
-    if (back) {
-      back.textContent = this.formatAmount(amount);
-      back.classList.add('reveal-flash');
-      setTimeout(() => back.classList.remove('reveal-flash'), 600);
-    }
+    const front = boxEl.querySelector('.box-front');
+    const numberEl = front.querySelector('.box-number');
+    if (numberEl) numberEl.style.display = 'none';
+    front.textContent = this.formatAmount(amount);
+    front.classList.add('opened');
 
-    // 震动效果
+    front.classList.add('reveal-flash');
+    setTimeout(() => front.classList.remove('reveal-flash'), 500);
     boxEl.classList.add('shake');
-    setTimeout(() => boxEl.classList.remove('shake'), 400);
+    setTimeout(() => boxEl.classList.remove('shake'), 350);
   },
 
-  /** 更新箱子样式（用 dataset.index 匹配，不受 DOM 移位影响） */
+  /** 更新箱子样式（用 dataset.index 匹配） */
   updateBoxStates() {
     const boxes = game.boxes;
     this.els.boxesGrid.querySelectorAll('.box').forEach((el) => {
@@ -215,10 +213,8 @@ const UI = {
         el.classList.add('selected');
       } else if (boxes[idx].state === BOX_STATE.ELIMINATED) {
         el.classList.add('eliminated');
-        el.classList.add('flipped');
       } else if (boxes[idx].state === BOX_STATE.FINAL) {
         el.classList.add('final');
-        el.classList.add('flipped');
       }
     });
   },
