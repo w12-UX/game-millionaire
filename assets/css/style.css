@@ -601,9 +601,9 @@ body::before {
 }
 
 .prize-list {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px 10px;
   max-height: 440px;
   overflow-y: auto;
 }
@@ -611,8 +611,8 @@ body::before {
 .prize-item {
   display: flex;
   justify-content: center;
-  padding: 4px 10px;
-  font-size: 12.5px;
+  padding: 3px 6px;
+  font-size: 12px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: rgba(255, 255, 255, 0.8);
