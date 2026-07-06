@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Game Millionaire - Demo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0a0a2e, #1a1a4e);
+      color: #fff;
+    }
+    .card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 60px 80px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    h1 {
+      font-size: 48px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #f7d875, #e4a825);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+    .sub {
+      font-size: 18px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 32px;
+    }
+    .status {
+      display: inline-block;
+      padding: 8px 24px;
+      border-radius: 50px;
+      background: rgba(0,255,100,0.15);
+      border: 1px solid rgba(0,255,100,0.3);
+      color: #4eff8b;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .info {
+      margin-top: 24px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.35);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>💰 Millionaire</h1>
+    <p class="sub">百万富翁 · 答题闯关</p>
+    <div class="status">✅ Demo 部署成功</div>
+    <p class="info">Netlify 链接正常工作！准备好开始真正的项目了 🚀</p>
+  </div>
+</body>
+</html>
