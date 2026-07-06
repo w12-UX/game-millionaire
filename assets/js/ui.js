@@ -312,8 +312,15 @@ const UI = {
 
   /** 格式化金额显示 */
   formatAmount(amount) {
-    if (amount >= 1000000) return `$${(amount / 1000000).toFixed(amount % 1000000 === 0 ? 0 : 1)}M`;
+    // ≥ 1万 统一显示为 X万
+    if (amount >= 10000) {
+      const wan = amount / 10000;
+      if (wan % 1 === 0) return `$${wan}万`;
+      return `$${wan.toFixed(1).replace(/\.0$/, '')}万`;
+    }
+    // ≥ 1000 逗号分隔
     if (amount >= 1000) return `$${amount.toLocaleString()}`;
+    // 特殊小金额
     if (amount === 0.01) return '$0.01';
     if (amount < 1) return `$${amount}`;
     return `$${amount}`;
