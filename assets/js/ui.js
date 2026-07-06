@@ -204,7 +204,15 @@ const UI = {
     setTimeout(() => front.classList.remove('reveal-flash'), 500);
     boxEl.classList.add('shake');
     setTimeout(() => boxEl.classList.remove('shake'), 350);
-    Audio.playOpenBox();
+
+    // 根据金额播不同音效
+    if (amount >= 1000000) {
+      Audio.playMillionReveal();
+    } else if (amount >= 100000) {
+      Audio.playBigReveal();
+    } else {
+      Audio.playOpenBox();
+    }
   },
 
   /** 更新箱子样式（用 dataset.index 匹配） */

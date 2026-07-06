@@ -93,6 +93,32 @@ const Audio = {
     setTimeout(() => this.playTone(1100, 0.12, 'sine', 0.1), 60);
   },
 
+  /** 开出大额 ≥$100k — 遗憾震惊 descending wah */
+  playBigReveal() {
+    this.playNoise(0.3, 0.25);
+    this.playMelody([
+      [523, 0, 0.25, 'square', 0.2],
+      [466, 0.25, 0.25, 'square', 0.18],
+      [415, 0.5, 0.25, 'square', 0.15],
+      [349, 0.75, 0.5, 'square', 0.12],
+    ]);
+    setTimeout(() => this.playNoise(0.15, 0.1), 200);
+  },
+
+  /** 开出 $1,000,000 — 震撼爆裂 descending crash */
+  playMillionReveal() {
+    this.playNoise(0.5, 0.35);
+    this.playMelody([
+      [784, 0, 0.2, 'sawtooth', 0.2],
+      [659, 0.2, 0.2, 'sawtooth', 0.18],
+      [523, 0.4, 0.25, 'sawtooth', 0.15],
+      [392, 0.65, 0.3, 'sawtooth', 0.12],
+      [262, 0.95, 0.6, 'sawtooth', 0.1],
+    ]);
+    setTimeout(() => this.playNoise(0.2, 0.15), 400);
+    setTimeout(() => this.playNoise(0.15, 0.1), 700);
+  },
+
   /** 银行家报价 — 经典电话铃声 */
   playBankerCall() {
     const notes = [
