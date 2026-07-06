@@ -160,10 +160,10 @@ body::before {
   display: none;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  width: 120px;
+  gap: 6px;
+  width: 90px;
   flex-shrink: 0;
-  padding-top: 6px;
+  padding-top: 2px;
 }
 
 .selected-box-area.hidden {
@@ -260,27 +260,28 @@ body::before {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
-  padding: 10px;
+  grid-auto-rows: 72px;
+  gap: 5px;
+  padding: 8px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(212, 175, 55, 0.1);
-  border-radius: 12px;
+  border-radius: 10px;
   min-width: 0;
+  max-width: 780px;
   transition: grid-template-columns 0.5s ease;
 }
 
 /* 选中专属箱后 → 剩余 25 箱排 5×5 */
 .main-area.has-selected .boxes-grid {
   grid-template-columns: repeat(5, 1fr);
+  max-width: 540px;
 }
 
 /* ===== 单个箱子（手提箱造型） ===== */
 .box {
-  aspect-ratio: 1;
-  perspective: 600px;
   cursor: pointer;
   position: relative;
-  padding-top: 6px;                 /* 为提手预留空间 */
+  perspective: 600px;
 }
 
 .box-inner {
@@ -300,39 +301,38 @@ body::before {
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  border-radius: 8px;
+  border-radius: 7px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
 }
 
-/* ===== 手提箱正面（未开） ===== */
+/* ===== 箱子正面（未开 — 棕色手提箱） ===== */
 .box-front {
   background: linear-gradient(160deg, #4a3728 0%, #2c1810 50%, #1a0e08 100%);
   border: 2px solid rgba(212, 175, 55, 0.5);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4),
-              inset 0 1px 0 rgba(212, 175, 55, 0.15);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4),
+              inset 0 1px 0 rgba(212, 175, 55, 0.1);
   transition: all 0.3s;
-  border-radius: 10px;
+  border-radius: 7px;
   position: relative;
-  overflow: visible;
 }
 
 /* 手提箱提手 */
 .box-front::before {
   content: '';
   position: absolute;
-  top: -12px;
+  top: -8px;
   left: 50%;
   transform: translateX(-50%);
-  width: 50%;
-  height: 8px;
-  border: 2.5px solid #d4af37;
+  width: 44%;
+  height: 6px;
+  border: 2px solid #d4af37;
   border-bottom: none;
-  border-radius: 6px 6px 0 0;
+  border-radius: 5px 5px 0 0;
   background: transparent;
-  box-shadow: 0 -2px 6px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 -2px 4px rgba(212, 175, 55, 0.1);
 }
 
 /* 手提箱锁扣 */
@@ -342,143 +342,181 @@ body::before {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 14px;
+  font-size: 12px;
   color: #d4af37;
-  opacity: 0.6;
-  text-shadow: 0 0 6px rgba(212, 175, 55, 0.3);
+  opacity: 0.5;
+  text-shadow: 0 0 4px rgba(212, 175, 55, 0.2);
 }
 
 .box-number {
-  font-size: 20px;
+  font-size: 16px;
   color: #d4af37;
-  text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
   z-index: 1;
   position: relative;
-  margin-top: 2px;
 }
 
 /* 箱子未开时悬浮效果 */
 .box:not(.flipped):not(.eliminated):hover .box-front {
   border-color: #d4af37;
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.25),
-              0 6px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2),
+              0 4px 15px rgba(0, 0, 0, 0.4);
   transform: translateY(-2px);
 }
 
-/* ===== 箱子背面（开箱 → 美钞绿 💵） ===== */
+/* ===== 箱子背面（已开 — 暗色开箱状态） ===== */
 .box-back {
-  background: linear-gradient(145deg, #1a5c2a, #0d3d1a);
-  border: 2px solid #4ade80;
+  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+  border: 2px solid rgba(212, 175, 55, 0.3);
   transform: rotateY(180deg);
-  font-size: 12px;
-  color: #86efac;
-  text-shadow: 0 0 10px rgba(74, 222, 128, 0.4);
-  border-radius: 10px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.6);
+  border-radius: 7px;
   position: relative;
 }
 
-/* 背面美钞装饰 */
+/* 背面小提手（更淡） */
 .box-back::before {
-  content: '💵';
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  font-size: 10px;
-  opacity: 0.5;
-}
-
-.box-back::after {
   content: '';
   position: absolute;
-  top: -12px;
+  top: -8px;
   left: 50%;
   transform: translateX(-50%);
-  width: 50%;
-  height: 8px;
-  border: 2px solid #4ade80;
+  width: 44%;
+  height: 6px;
+  border: 2px solid rgba(212, 175, 55, 0.2);
   border-bottom: none;
-  border-radius: 6px 6px 0 0;
+  border-radius: 5px 5px 0 0;
   background: transparent;
   opacity: 0.3;
 }
 
+/* 背面已开标记 */
+.box-back::after {
+  content: '✓';
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* 开箱闪烁 */
 .reveal-flash {
-  animation: flashReveal 0.6s ease;
+  animation: flashReveal 0.5s ease;
 }
 
 @keyframes flashReveal {
-  0% { background: rgba(74, 222, 128, 0.4); }
+  0% { background: rgba(212, 175, 55, 0.3); }
   100% { background: transparent; }
 }
 
-/* 选中状态（专属箱子 → 金色手提箱✨） */
-.box.selected .box-inner {
-  border-radius: 22px 8px 8px 22px;
-}
-
-.box.selected .box-front {
-  border-color: #FFD700;
-  box-shadow: 0 0 25px rgba(255, 215, 0, 0.5),
-              0 0 50px rgba(255, 215, 0, 0.2),
-              inset 0 0 20px rgba(255, 215, 0, 0.1);
-  background: linear-gradient(160deg, #FFD700 0%, #DAA520 40%, #B8860B 100%);
-}
-
-.box.selected .box-front::after {
-  color: #5a3e00;
-  opacity: 0.8;
-}
-
-.box.selected .box-number {
-  font-size: 22px;
-  color: #3d2000;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
-}
-
-/* 「★ 我的」标签嵌入底部 */
-.box.selected::after {
-  content: '★ 我的';
-  position: absolute;
-  bottom: 2px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 9px;
-  font-weight: 700;
-  color: #5a3e00;
-  letter-spacing: 1px;
-  white-space: nowrap;
-  background: rgba(255, 215, 0, 0.85);
-  padding: 1px 8px;
-  border-radius: 6px;
-  z-index: 2;
-}
-
-/* 已淘汰状态 */
+/* ===== 已淘汰状态（保留完整占位） ===== */
 .box.eliminated {
   cursor: not-allowed;
-  opacity: 0.5;
 }
 
 .box.eliminated .box-front {
-  border-color: rgba(255, 255, 255, 0.1);
-  background: linear-gradient(145deg, #111, #080808);
+  border-color: rgba(255, 255, 255, 0.08);
+  background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+}
+
+.box.eliminated .box-front::before {
+  border-color: rgba(212, 175, 55, 0.15);
+}
+
+.box.eliminated .box-front::after {
+  opacity: 0.15;
 }
 
 .box.eliminated .box-number {
   display: none;
 }
 
+/* ===== 选中状态（专属箱 — 金色手提箱） ===== */
+.box.selected .box-front {
+  border-color: #FFD700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.4),
+              inset 0 0 12px rgba(255, 215, 0, 0.1);
+  background: linear-gradient(160deg, #FFD700 0%, #DAA520 40%, #B8860B 100%);
+}
+
+.box.selected .box-front::after {
+  color: #5a3e00;
+  opacity: 0.7;
+}
+
+.box.selected .box-number {
+  font-size: 18px;
+  color: #3d2000;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+/* 「★ 我的」标签完全内嵌在箱子底部边界内 */
+.box.selected::after {
+  content: '★';
+  position: absolute;
+  bottom: 1px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 7px;
+  color: #5a3e00;
+  letter-spacing: 0;
+  background: rgba(255, 215, 0, 0.7);
+  padding: 1px 5px;
+  border-radius: 4px;
+  z-index: 2;
+  line-height: 1;
+}
+
+/* ===== 专属箱展示区（适配固定高度箱子） ===== */
+.selected-box-slot {
+  width: 72px;
+  height: 72px;
+  position: relative;
+}
+
+.selected-box-slot .box {
+  cursor: default;
+  width: 100%;
+  height: 100%;
+}
+
+.selected-box-slot .box-inner {
+  width: 100%;
+  height: 100%;
+}
+
+.selected-box-slot .box.selected {
+  margin-bottom: 0;
+}
+
+.selected-box-slot .box.selected::after {
+  display: none;                /* 左侧专属箱不显示 ★ 标签 */
+}
+
+/* 专属箱进入动画 */
+.selected-box-slot .box {
+  animation: slideToLeft 0.5s ease;
+}
+
+@keyframes slideToLeft {
+  0% { transform: scale(0.7); opacity: 0.2; }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 /* 震动动画 */
 .shake {
-  animation: shake 0.4s ease;
+  animation: shake 0.35s ease;
 }
 
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-4px); }
-  40% { transform: translateX(4px); }
-  60% { transform: translateX(-3px); }
-  80% { transform: translateX(3px); }
+  20% { transform: translateX(-3px); }
+  40% { transform: translateX(3px); }
+  60% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
 }
 
 /* ===== 侧边栏（奖金池 + 状态） ===== */
