@@ -153,10 +153,11 @@ const UI = {
     if (state.phase === GAME_PHASE.SELECTING) {
       const ok = game.selectBox(index);
       if (ok) {
-        // 把选中的箱子从网格移到专属展示区
+        // 把选中的箱子从网格移到专属展示区，并添加高亮样式
         const boxEl = this.els.boxesGrid.querySelector(`.box[data-index="${index}"]`);
         if (boxEl) {
           this.els.selectedBoxSlot.innerHTML = '';
+          boxEl.classList.add('selected');
           this.els.selectedBoxSlot.appendChild(boxEl);
         }
         this.els.selectedBoxArea.classList.remove('hidden');
