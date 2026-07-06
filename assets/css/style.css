@@ -812,43 +812,236 @@ body::before {
 }
 
 /* ===== 响应式 ===== */
+/* ===== 响应式：平板 ===== */
 @media (max-width: 1024px) {
+  .game-container {
+    padding: 16px;
+  }
   .main-area {
     flex-direction: column;
+    gap: 12px;
   }
   .sidebar-left, .sidebar-right {
     width: 100%;
     min-width: 0;
   }
-  .status-panel, .prize-panel {
-    flex: 1;
-    min-width: 200px;
+  .sidebar-left {
+    order: 0;
+  }
+  .center-area {
+    order: 1;
+  }
+  .sidebar-right {
+    order: 2;
+  }
+  .sidebar-left .prize-panel {
+    max-height: 180px;
+  }
+  .sidebar-left .prize-list {
+    max-height: 150px;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .sidebar-left .prize-item {
+    font-size: 11px;
+    padding: 2px 4px;
+  }
+  .sidebar-right .status-panel {
+    padding: 12px 14px;
+  }
+  .sidebar-right .status-panel h3 {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  .sidebar-right .status-item {
+    font-size: 13px;
+    padding: 5px 0;
   }
   .boxes-grid {
     grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: 80px;
+    gap: 5px;
+    padding: 10px;
   }
-}
-
-@media (max-width: 600px) {
-  .boxes-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    padding: 12px;
-  }
-  .header h1 {
-    font-size: 28px;
+  .main-area.has-selected .boxes-grid {
+    grid-template-columns: repeat(5, 1fr);
   }
   .box-number {
     font-size: 18px;
   }
-  .popup {
-    padding: 30px 24px;
+  .header h1 {
+    font-size: 32px;
   }
-  .popup .amount {
-    font-size: 36px;
+  .header {
+    padding: 14px 0 8px;
+  }
+  .guide-bar {
+    padding: 4px 0;
+    margin-bottom: 4px;
+  }
+  .guide-text {
+    font-size: 13px;
+    padding: 4px 16px;
+  }
+}
+
+/* ===== 响应式：手机 ===== */
+@media (max-width: 600px) {
+  .game-container {
+    padding: 10px;
+  }
+  .header h1 {
+    font-size: 26px;
+    letter-spacing: 3px;
+  }
+  .header .subtitle {
+    font-size: 10px;
+    letter-spacing: 4px;
+  }
+  .header {
+    padding: 10px 0 6px;
   }
   .top-bar {
-    flex-direction: column;
-    gap: 10px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 4px 0 8px;
+  }
+  .top-bar-left {
+    gap: 6px;
+  }
+  .btn {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  .btn-sound {
+    font-size: 11px;
+    padding: 4px 10px;
+  }
+  .guide-text {
+    font-size: 12px;
+    padding: 3px 12px;
+  }
+  .main-area {
+    gap: 8px;
+  }
+  .sidebar-left .prize-panel {
+    padding: 10px 12px;
+    max-height: 140px;
+  }
+  .sidebar-left .prize-panel h3 {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+  .sidebar-left .prize-list {
+    max-height: 110px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px 8px;
+  }
+  .sidebar-left .prize-item {
+    font-size: 10px;
+    padding: 2px 3px;
+  }
+  .sidebar-right .status-panel {
+    padding: 8px 10px;
+  }
+  .sidebar-right .status-panel h3 {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+  .sidebar-right .status-item {
+    font-size: 12px;
+    padding: 4px 0;
+  }
+  .center-area {
+    gap: 8px;
+  }
+  .boxes-grid {
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: 60px;
+    gap: 4px;
+    padding: 6px;
+  }
+  .main-area.has-selected .boxes-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .box {
+    padding-top: 6px;
+  }
+  .box-inner {
+    height: calc(100% - 6px);
+  }
+  .box-number {
+    font-size: 14px;
+  }
+  .box-front {
+    border-radius: 5px;
+    border-width: 1.5px;
+  }
+  .box-front::before {
+    top: -6px;
+    height: 5px;
+    width: 40%;
+    border-width: 1.5px;
+  }
+  .box-front::after {
+    font-size: 9px;
+  }
+  .box-back {
+    font-size: 8px;
+    border-radius: 5px;
+  }
+  .selected-box-area {
+    gap: 8px;
+    padding: 4px 0;
+  }
+  .selected-box-label {
+    font-size: 11px;
+  }
+  .selected-box-slot {
+    width: 56px;
+    height: 56px;
+    padding: 2px;
+  }
+  .selected-box-slot .box.selected .box-number {
+    font-size: 18px;
+  }
+  .box.selected::after {
+    font-size: 6px;
+    padding: 0 4px;
+    bottom: 0;
+  }
+  .box.eliminated .box-front {
+    font-size: 9px;
+  }
+  .popup {
+    padding: 20px 16px;
+    max-width: 340px;
+  }
+  .popup h2 {
+    font-size: 22px;
+  }
+  .popup .amount {
+    font-size: 32px;
+    margin: 12px 0;
+  }
+  .popup .popup-sub {
+    font-size: 12px;
+    margin-bottom: 14px;
+  }
+  .popup-actions .btn {
+    min-width: 100px;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  .result-title {
+    font-size: 26px;
+  }
+  .result-row {
+    font-size: 13px;
+    padding: 6px 0;
+  }
+  .footer {
+    padding: 10px 0 12px;
+    font-size: 9px;
   }
 }
