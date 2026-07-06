@@ -3,64 +3,170 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Game Millionaire - Demo</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #0a0a2e, #1a1a4e);
-      color: #fff;
-    }
-    .card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 24px;
-      padding: 60px 80px;
-      text-align: center;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    }
-    h1 {
-      font-size: 48px;
-      font-weight: 900;
-      background: linear-gradient(135deg, #f7d875, #e4a825);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 12px;
-    }
-    .sub {
-      font-size: 18px;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 32px;
-    }
-    .status {
-      display: inline-block;
-      padding: 8px 24px;
-      border-radius: 50px;
-      background: rgba(0,255,100,0.15);
-      border: 1px solid rgba(0,255,100,0.3);
-      color: #4eff8b;
-      font-size: 14px;
-      font-weight: 600;
-    }
-    .info {
-      margin-top: 24px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.35);
-    }
-  </style>
+  <title>一掷千金 — Deal or No Deal</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
-  <div class="card">
-    <h1>💰 Millionaire</h1>
-    <p class="sub">百万富翁 · 答题闯关</p>
-    <div class="status">✅ Demo 部署成功</div>
-    <p class="info">Netlify 链接正常工作！准备好开始真正的项目了 🚀</p>
+
+  <div class="game-container">
+
+    <!-- ===== 标题 ===== -->
+    <header class="header">
+      <h1>一掷千金</h1>
+      <div class="subtitle">Deal or No Deal</div>
+    </header>
+
+    <!-- ===== 顶部工具栏 ===== -->
+    <div class="top-bar">
+      <button class="btn btn-gold" id="restartBtn">⟳ 重新开始</button>
+      <button class="btn btn-ghost" id="rulesBtn">📖 游戏规则</button>
+    </div>
+
+    <!-- ===== 新手引导 ===== -->
+    <div class="guide-bar">
+      <span class="guide-text" id="guideText">请选择你的专属箱子</span>
+    </div>
+
+    <!-- ===== 主体区域 ===== -->
+    <div class="main-area">
+
+      <!-- 箱子网格 -->
+      <div class="boxes-grid" id="boxesGrid"></div>
+
+      <!-- 侧边栏 -->
+      <aside class="sidebar">
+
+        <!-- 状态面板 -->
+        <div class="status-panel">
+          <h3>📊 游戏状态</h3>
+          <div class="status-item">
+            <span class="label">当前轮次</span>
+            <span class="value" id="statusRound">第 1 轮</span>
+          </div>
+          <div class="status-item">
+            <span class="label">本轮开箱</span>
+            <span class="value" id="statusOpened">0/6</span>
+          </div>
+          <div class="status-item">
+            <span class="label">最新报价</span>
+            <span class="value" id="statusOffer">—</span>
+          </div>
+        </div>
+
+        <!-- 奖金池 -->
+        <div class="prize-panel">
+          <h3>💰 奖金池</h3>
+          <div class="prize-list" id="prizeList"></div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- ===== 底部 ===== -->
+    <footer class="footer">
+      Deal or No Deal · 前端 Demo · 纯静态部署
+    </footer>
   </div>
+
+  <!-- ===== 银行家报价弹窗 ===== -->
+  <div class="popup-overlay hidden" id="offerPopup">
+    <div class="popup">
+      <h2>🏦 银行家报价</h2>
+      <div class="popup-sub">The Banker offers you</div>
+      <div class="amount" id="offerAmount">$0</div>
+      <div class="popup-sub">接受这个报价，还是继续冒险？</div>
+      <div class="popup-actions">
+        <button class="btn btn-deal" id="dealBtn">✅ Deal · 成交</button>
+        <button class="btn btn-nodeal" id="noDealBtn">❌ No Deal · 继续</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 终极抉择弹窗 ===== -->
+  <div class="popup-overlay hidden" id="finalPopup">
+    <div class="popup">
+      <h2>⚖️ 终极抉择</h2>
+      <div class="popup-sub">还剩最后两个箱子，你会怎么选？</div>
+      <div class="popup-sub" style="margin-bottom:8px; color: #f7d875;">
+        金额：<span id="finalAmount">—</span>
+      </div>
+      <div class="popup-actions">
+        <button class="btn btn-nodeal" id="swapBtn">🔄 交换箱子</button>
+        <button class="btn btn-deal" id="keepBtn">📦 保留我的箱子</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 游戏结算弹窗 ===== -->
+  <div class="popup-overlay hidden" id="resultPopup">
+    <div class="popup">
+      <div class="result-title" id="resultTitle">🎉 游戏结束</div>
+      <div class="amount" id="resultEarned">$0</div>
+      <div style="margin-top:20px;">
+        <div class="result-row">
+          <span class="label" id="resultPlayerBoxLabel">你的箱子</span>
+          <span class="value" id="resultPlayerBox">$0</span>
+        </div>
+        <div class="result-row" id="resultOtherBoxRow">
+          <span class="label">另一箱子</span>
+          <span class="value" id="resultOtherBox">$0</span>
+        </div>
+        <div class="result-row">
+          <span class="label">最高可中</span>
+          <span class="value highlight" id="resultCouldHave">$0</span>
+        </div>
+      </div>
+      <div class="popup-actions">
+        <button class="btn btn-gold" id="restartBtn2">⟳ 再来一局</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 规则弹窗 ===== -->
+  <div class="popup-overlay hidden" id="rulesPopup">
+    <div class="popup" style="max-width:560px;">
+      <h2>📖 游戏规则</h2>
+      <div class="rules-content">
+        <h3>目标</h3>
+        <p>从 26 个箱子中选中你的专属箱，通过淘汰其他箱子来试探奖金池，最终在银行家报价与开箱风险之间做出抉择。</p>
+        <h3>流程</h3>
+        <ul>
+          <li><strong>① 选箱</strong> — 从 26 个箱子中选 1 个作为你的专属箱</li>
+          <li><strong>② 开箱</strong> — 按轮次依次打开剩余箱子，淘汰的金额会从奖金池移除</li>
+          <li><strong>③ 报价</strong> — 每轮开完后，银行家会给出收购报价</li>
+          <li><strong>④ 抉择</strong> — Deal 拿钱走人 / No Deal 继续冒险</li>
+          <li><strong>⑤ 终局</strong> — 剩最后 2 箱时，可选择交换或保留，开箱定胜负</li>
+        </ul>
+        <h3>轮次</h3>
+        <p>第 1 轮开 6 箱 → 第 2 轮开 5 箱 → 第 3 轮开 4 箱 → 第 4 轮开 3 箱 → 第 5 轮开 2 箱 → 之后每轮开 1 箱</p>
+        <h3>银行家报价</h3>
+        <p>基于剩余奖金池的均值，结合游戏进度动态计算。前期压价、后期溢价，请谨慎决策。</p>
+      </div>
+      <div class="popup-actions" style="margin-top:20px;">
+        <button class="btn btn-gold" id="closeRulesBtn">知道了</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 脚本加载（按依赖顺序） ===== -->
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/game.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script>
+    // 游戏入口
+    const game = new DealOrNoDeal();
+
+    // 规则弹窗控制
+    document.getElementById('rulesBtn').addEventListener('click', () => {
+      document.getElementById('rulesPopup').classList.remove('hidden');
+    });
+    document.getElementById('closeRulesBtn').addEventListener('click', () => {
+      document.getElementById('rulesPopup').classList.add('hidden');
+    });
+
+    // 初始化 UI（必须在 game 实例创建之后）
+    UI.init();
+  </script>
+
 </body>
 </html>
