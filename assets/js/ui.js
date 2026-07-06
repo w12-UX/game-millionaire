@@ -1,0 +1,326 @@
+/**
+ * ui.js — 视图渲染与交互控制
+ * 只负责 DOM 操作和事件绑定，不涉及游戏业务逻辑
+ */
+
+const UI = {
+  /** DOM 缓存 */
+  els: {},
+
+  /** 初始化 UI */
+  init() {
+    this.cacheElements();
+    this.renderPrizeList();
+    this.renderBoxes();
+    this.updateStatus();
+    this.updateGuide('请选择你的专属箱子');
+    this.bindEvents();
+  },
+
+  /** 缓存 DOM 元素 */
+  cacheElements() {
+    this.els = {
+      boxesGrid: document.getElementById('boxesGrid'),
+      prizeList: document.getElementById('prizeList'),
+      statusRound: document.getElementById('statusRound'),
+      statusOpened: document.getElementById('statusOpened'),
+      statusOffer: document.getElementById('statusOffer'),
+      offerPopup: document.getElementById('offerPopup'),
+      offerAmount: document.getElementById('offerAmount'),
+      dealBtn: document.getElementById('dealBtn'),
+      noDealBtn: document.getElementById('noDealBtn'),
+      finalPopup: document.getElementById('finalPopup'),
+      finalAmount: document.getElementById('finalAmount'),
+      swapBtn: document.getElementById('swapBtn'),
+      keepBtn: document.getElementById('keepBtn'),
+      resultPopup: document.getElementById('resultPopup'),
+      resultTitle: document.getElementById('resultTitle'),
+      resultEarned: document.getElementById('resultEarned'),
+      resultPlayerBox: document.getElementById('resultPlayerBox'),
+      resultOtherBox: document.getElementById('resultOtherBox'),
+      resultCouldHave: document.getElementById('resultCouldHave'),
+      restartBtn: document.getElementById('restartBtn'),
+      restartBtn2: document.getElementById('restartBtn2'),
+      guideText: document.getElementById('guideText')
+    };
+  },
+
+  /** 绑定事件 */
+  bindEvents() {
+    this.els.dealBtn.addEventListener('click', () => game.acceptDeal());
+    this.els.noDealBtn.addEventListener('click', () => game.rejectDeal());
+    this.els.swapBtn.addEventListener('click', () => game.finalChoice(true));
+    this.els.keepBtn.addEventListener('click', () => game.finalChoice(false));
+    this.els.restartBtn.addEventListener('click', () => this.resetGame());
+    this.els.restartBtn2.addEventListener('click', () => this.resetGame());
+  },
+
+  /** 重置游戏 */
+  resetGame() {
+    game.reset();
+    this.init();
+    this.closeAllPopups();
+  },
+
+  /** 渲染 26 个箱子 */
+  renderBoxes() {
+    const grid = this.els.boxesGrid;
+    grid.innerHTML = '';
+    game.boxes.forEach((box, index) => {
+      const div = document.createElement('div');
+      div.className = 'box';
+      div.dataset.index = index;
+
+      const inner = document.createElement('div');
+      inner.className = 'box-inner';
+
+      const front = document.createElement('div');
+      front.className = 'box-front';
+      front.innerHTML = `<span class="box-number">${box.id}</span>`;
+
+      const back = document.createElement('div');
+      back.className = 'box-back';
+      back.textContent = this.formatAmount(box.amount);
+
+      inner.appendChild(front);
+      inner.appendChild(back);
+      div.appendChild(inner);
+
+      div.addEventListener('click', () => this.handleBoxClick(index));
+      grid.appendChild(div);
+    });
+  },
+
+  /** 处理箱子点击 */
+  handleBoxClick(index) {
+    const state = game.getState();
+
+    if (state.phase === GAME_PHASE.SELECTING) {
+      const ok = game.selectBox(index);
+      if (ok) {
+        this.updateBoxStates();
+        this.updateStatus();
+        this.updateGuide('点击箱子完成本轮开箱');
+      }
+      return;
+    }
+
+    if (state.phase === GAME_PHASE.OPENING) {
+      const result = game.openBox(index);
+      if (result) {
+        this.flipBox(index, result.amount);
+        this.updateBoxStates();
+        this.updatePrizeList();
+        this.updateStatus();
+
+        if (result.roundComplete) {
+          this.updateGuide('等待银行家报价');
+          setTimeout(() => this.showOffer(), 800);
+        }
+      }
+    }
+  },
+
+  /** 翻转箱子动画并显示金额 */
+  flipBox(index, amount) {
+    const boxEl = this.els.boxesGrid.children[index];
+    if (!boxEl) return;
+    boxEl.classList.add('flipped');
+
+    // 金额高亮闪烁
+    const back = boxEl.querySelector('.box-back');
+    if (back) {
+      back.textContent = this.formatAmount(amount);
+      back.classList.add('reveal-flash');
+      setTimeout(() => back.classList.remove('reveal-flash'), 600);
+    }
+
+    // 震动效果
+    boxEl.classList.add('shake');
+    setTimeout(() => boxEl.classList.remove('shake'), 400);
+  },
+
+  /** 更新所有箱子的状态样式 */
+  updateBoxStates() {
+    const boxes = game.boxes;
+    this.els.boxesGrid.querySelectorAll('.box').forEach((el, index) => {
+      el.className = 'box';
+      if (boxes[index].state === BOX_STATE.SELECTED) {
+        el.classList.add('selected');
+      } else if (boxes[index].state === BOX_STATE.ELIMINATED) {
+        el.classList.add('eliminated');
+        el.classList.add('flipped'); // 保持翻开状态
+      } else if (boxes[index].state === BOX_STATE.FINAL) {
+        el.classList.add('final');
+        el.classList.add('flipped');
+      }
+    });
+  },
+
+  /** 渲染奖金池侧边栏 */
+  renderPrizeList() {
+    const list = this.els.prizeList;
+    list.innerHTML = '';
+    AMOUNTS.forEach(amount => {
+      const div = document.createElement('div');
+      div.className = 'prize-item';
+      div.dataset.amount = amount;
+      div.textContent = this.formatAmount(amount);
+      list.appendChild(div);
+    });
+  },
+
+  /** 更新奖金池状态（已淘汰的划掉） */
+  updatePrizeList() {
+    const eliminated = game.boxes
+      .filter(b => b.state === BOX_STATE.ELIMINATED)
+      .map(b => b.amount);
+
+    this.els.prizeList.querySelectorAll('.prize-item').forEach(el => {
+      const amount = parseFloat(el.dataset.amount);
+      if (eliminated.includes(amount)) {
+        el.classList.add('eliminated');
+      }
+    });
+  },
+
+  /** 更新状态提示区 */
+  updateStatus() {
+    const state = game.getState();
+    this.els.statusRound.textContent = `第 ${state.currentRound} 轮`;
+    if (state.phase === GAME_PHASE.OPENING || state.phase === GAME_PHASE.BANKER_OFFER) {
+      this.els.statusOpened.textContent = `已开 ${state.openedThisRound}/${state.roundTotal}`;
+    } else if (state.phase === GAME_PHASE.SELECTING) {
+      this.els.statusOpened.textContent = '等待选箱';
+    } else {
+      this.els.statusOpened.textContent = '';
+    }
+
+    // 更新最新报价显示
+    if (state.offerHistory.length > 0) {
+      const last = state.offerHistory[state.offerHistory.length - 1];
+      this.els.statusOffer.textContent = `最新报价: ${this.formatAmount(last.offer)}`;
+    } else {
+      this.els.statusOffer.textContent = '';
+    }
+  },
+
+  /** 更新新手引导文字 */
+  updateGuide(text) {
+    if (this.els.guideText) {
+      this.els.guideText.textContent = text;
+      this.els.guideText.classList.add('fade-in');
+      setTimeout(() => this.els.guideText.classList.remove('fade-in'), 500);
+    }
+  },
+
+  /** 显示银行家报价弹窗 */
+  showOffer() {
+    const offer = game.makeOffer();
+    if (offer === null) return;
+
+    this.els.offerAmount.textContent = this.formatAmount(offer);
+    this.els.offerPopup.classList.remove('hidden');
+    this.els.offerPopup.classList.add('pop-in');
+    this.updateStatus();
+  },
+
+  /** 显示终极抉择弹窗 */
+  showFinalChoice() {
+    const remaining = game.getRemainingAmounts();
+    this.els.finalAmount.textContent = `${this.formatAmount(remaining[0])} 或 ${this.formatAmount(remaining[1])}`;
+    this.els.finalPopup.classList.remove('hidden');
+    this.els.finalPopup.classList.add('pop-in');
+  },
+
+  /** 显示游戏结算弹窗 */
+  showResult(result) {
+    this.els.resultPopup.classList.remove('hidden');
+    this.els.resultPopup.classList.add('pop-in');
+
+    if (result.type === 'deal') {
+      this.els.resultTitle.textContent = '✅ 成交！';
+      this.els.resultEarned.textContent = `你获得了: ${this.formatAmount(result.earned)}`;
+      this.els.resultPlayerBox.textContent = `你的箱子实际金额: ${this.formatAmount(result.playerBoxAmount)}`;
+      this.els.resultOtherBox.textContent = '';
+      this.els.resultCouldHave.textContent = `最高可中: ${this.formatAmount(result.couldHaveWon)}`;
+    } else {
+      this.els.resultTitle.textContent = result.swapped ? '🔄 你选择了交换' : '📦 你选择了保留';
+      this.els.resultEarned.textContent = `最终获得: ${this.formatAmount(result.earned)}`;
+      this.els.resultPlayerBox.textContent = `你的箱子: ${this.formatAmount(result.playerBoxAmount)}`;
+      this.els.resultOtherBox.textContent = `另一箱子: ${this.formatAmount(result.otherBoxAmount)}`;
+      this.els.resultCouldHave.textContent = `最高可中: ${this.formatAmount(result.couldHaveWon)}`;
+    }
+  },
+
+  /** 关闭所有弹窗 */
+  closeAllPopups() {
+    document.querySelectorAll('.popup').forEach(p => {
+      p.classList.add('hidden');
+      p.classList.remove('pop-in');
+    });
+  },
+
+  /** 格式化金额显示 */
+  formatAmount(amount) {
+    if (amount >= 1000000) return `$${(amount / 1000000).toFixed(amount % 1000000 === 0 ? 0 : 1)}M`;
+    if (amount >= 1000) return `$${amount.toLocaleString()}`;
+    if (amount === 0.01) return '$0.01';
+    if (amount < 1) return `$${amount}`;
+    return `$${amount}`;
+  }
+};
+
+/** ========== 全局事件桥接 ========== */
+
+// 监听游戏事件（由 game.js 触发，ui.js 响应）
+
+/** 当玩家接受报价后 */
+const origAccept = game.acceptDeal.bind(game);
+game.acceptDeal = function() {
+  const result = origAccept();
+  if (result) {
+    UI.closeAllPopups();
+    setTimeout(() => {
+      UI.updateBoxStates();
+      UI.updateStatus();
+      UI.showResult(result);
+      UI.updateGuide('游戏结束，点击「重新开始」再来一局');
+    }, 300);
+  }
+  return result;
+};
+
+/** 当玩家拒绝报价后 */
+const origReject = game.rejectDeal.bind(game);
+game.rejectDeal = function() {
+  const ok = origReject();
+  if (ok) {
+    UI.closeAllPopups();
+    const state = game.getState();
+    if (state.phase === GAME_PHASE.FINAL_CHOICE) {
+      setTimeout(() => UI.showFinalChoice(), 300);
+      UI.updateGuide('只剩最后两箱，请做出终极抉择');
+    } else {
+      UI.updateGuide('点击箱子完成本轮开箱');
+    }
+    UI.updateStatus();
+  }
+  return ok;
+};
+
+/** 当玩家做出终极抉择后 */
+const origFinal = game.finalChoice.bind(game);
+game.finalChoice = function(shouldSwap) {
+  const result = origFinal(shouldSwap);
+  if (result) {
+    UI.closeAllPopups();
+    setTimeout(() => {
+      UI.updateBoxStates();
+      UI.updateStatus();
+      UI.showResult(result);
+      UI.updateGuide('游戏结束，点击「重新开始」再来一局');
+    }, 300);
+  }
+  return result;
+};
