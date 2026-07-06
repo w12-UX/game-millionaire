@@ -85,40 +85,55 @@ class DealOrNoDeal {
       .map(b => b.amount);
   }
 
-  /** 计算银行家报价 */
+  /** 计算银行家报价（按综艺原版规则） */
   calculateOffer() {
     const remaining = this.getRemainingAmounts();
     if (remaining.length === 0) return 0;
 
     const avg = remaining.reduce((a, b) => a + b, 0) / remaining.length;
 
-    // 根据轮次选择进度系数
+    // === 1. 轮次基础系数 ===
     let coeffMin, coeffMax;
     if (this.currentRound <= 3) {
-      coeffMin = BANKER_CONFIG.earlyCoefficient.min;
-      coeffMax = BANKER_CONFIG.earlyCoefficient.max;
+      coeffMin = 0.10; coeffMax = 0.30;     // 前期：均值 10%-30%
     } else if (this.currentRound <= 6) {
-      coeffMin = BANKER_CONFIG.midCoefficient.min;
-      coeffMax = BANKER_CONFIG.midCoefficient.max;
+      coeffMin = 0.40; coeffMax = 0.60;     // 中期：均值 40%-60%
     } else {
-      coeffMin = BANKER_CONFIG.lateCoefficient.min;
-      coeffMax = BANKER_CONFIG.lateCoefficient.max;
+      coeffMin = 0.70; coeffMax = 0.90;     // 后期（≤4箱）：均值 70%-90%
     }
-    const coeff = coeffMin + Math.random() * (coeffMax - coeffMin);
+    let coeff = coeffMin + Math.random() * (coeffMax - coeffMin);
 
-    // 剩余箱子惩罚系数：箱越多银行家越敢压价
-    const remainingCount = remaining.length;
-    const boxPenalty = Math.max(0.3, 1 - (remainingCount - 2) * 0.025);
+    // === 2. 大额淘汰修正：已开出大额（≥$100k）越多，系数压得越低 ===
+    const eliminatedAmounts = this.boxes
+      .filter(b => b.state === BOX_STATE.ELIMINATED)
+      .map(b => b.amount);
+    const bigEliminated = eliminatedAmounts.filter(a => a >= 100000).length;
+    if (bigEliminated > 0) {
+      coeff *= (1 - bigEliminated * 0.12);
+    }
 
-    // 随机浮动 ±8%
-    const fluctuation = 1 + (Math.random() * BANKER_CONFIG.fluctuation * 2 - BANKER_CONFIG.fluctuation);
+    // === 3. 专属箱兜底修正 ===
+    const playerBox = this.boxes[this.selectedBoxIndex];
+    if (playerBox && playerBox.state === BOX_STATE.SELECTED) {
+      if (playerBox.amount >= 100000) {
+        coeff *= 1.1;   // 专属箱是大额 → 小幅抬升
+      } else if (playerBox.amount <= 1000) {
+        coeff *= 0.8;   // 专属箱是小额 → 进一步压价
+      }
+    }
 
-    let offer = avg * coeff * fluctuation * boxPenalty;
+    // 系数安全钳位
+    coeff = Math.max(0.05, Math.min(0.95, coeff));
 
-    // 兜底：报价不为 0
+    // === 4. 微幅随机浮动 ±5%（仅节目效果，不突破安全区间） ===
+    const fluctuation = 1 + (Math.random() * 0.10 - 0.05);
+
+    let offer = avg * coeff * fluctuation;
+
+    // 兜底
     if (offer < 1) offer = 1;
 
-    // 取整：大额以千为单位
+    // 取整
     if (offer >= 1000) {
       offer = Math.round(offer / 1000) * 1000;
     } else {

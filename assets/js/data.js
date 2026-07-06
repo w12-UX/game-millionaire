@@ -18,16 +18,12 @@ const ROUND_OPEN_COUNTS = [6, 5, 4, 3, 2];
 // 后续轮次（第 6 轮起）每轮开 1 个
 const LATER_ROUNDS_OPEN_COUNT = 1;
 
-// 银行家报价算法参数
+// 银行家报价算法参数（供参考，实际逻辑在 game.js calculateOffer 中）
 const BANKER_CONFIG = {
-  // 前期（1-3 轮）：狠压价，8%-20% 均值，制造心理压迫
-  earlyCoefficient: { min: 0.08, max: 0.20 },
-  // 中期（4-6 轮）：逐步抬价，30%-55%
-  midCoefficient: { min: 0.30, max: 0.55 },
-  // 后期（7 轮起）：接近真实，60%-90%
-  lateCoefficient: { min: 0.60, max: 0.90 },
-  // 固定随机浮动 ±8%
-  fluctuation: 0.08
+  earlyCoefficient: { min: 0.10, max: 0.30 },   // 前期 1-3 轮
+  midCoefficient: { min: 0.40, max: 0.60 },      // 中期 4-6 轮
+  lateCoefficient: { min: 0.70, max: 0.90 },     // 后期 ≤4 箱
+  fluctuation: 0.05                               // 微幅浮动
 };
 
 // 箱子状态枚举
