@@ -20,7 +20,10 @@ const UI = {
   /** 缓存 DOM 元素 */
   cacheElements() {
     this.els = {
+      mainArea: document.querySelector('.main-area'),
       boxesGrid: document.getElementById('boxesGrid'),
+      selectedBoxArea: document.getElementById('selectedBoxArea'),
+      selectedBoxSlot: document.getElementById('selectedBoxSlot'),
       prizeList: document.getElementById('prizeList'),
       statusRound: document.getElementById('statusRound'),
       statusOpened: document.getElementById('statusOpened'),
@@ -106,6 +109,10 @@ const UI = {
   /** 重置游戏 */
   resetGame() {
     game.reset();
+    // 还原布局：移回箱子、隐藏专属区
+    this.els.mainArea.classList.remove('has-selected');
+    this.els.selectedBoxArea.classList.add('hidden');
+    this.els.selectedBoxSlot.innerHTML = '';
     this.init();
     this.closeAllPopups();
   },
@@ -146,6 +153,14 @@ const UI = {
     if (state.phase === GAME_PHASE.SELECTING) {
       const ok = game.selectBox(index);
       if (ok) {
+        // 把选中的箱子从网格移到左侧专属展示区
+        const boxEl = this.els.boxesGrid.children[index];
+        if (boxEl) {
+          this.els.selectedBoxSlot.innerHTML = '';
+          this.els.selectedBoxSlot.appendChild(boxEl);
+        }
+        this.els.selectedBoxArea.classList.remove('hidden');
+        this.els.mainArea.classList.add('has-selected');
         this.updateBoxStates();
         this.updateStatus();
         this.updateGuide('点击箱子完成本轮开箱');
