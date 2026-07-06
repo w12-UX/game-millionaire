@@ -106,10 +106,14 @@ class DealOrNoDeal {
     }
     const coeff = coeffMin + Math.random() * (coeffMax - coeffMin);
 
+    // 剩余箱子惩罚系数：箱越多银行家越敢压价
+    const remainingCount = remaining.length;
+    const boxPenalty = Math.max(0.3, 1 - (remainingCount - 2) * 0.025);
+
     // 随机浮动 ±8%
     const fluctuation = 1 + (Math.random() * BANKER_CONFIG.fluctuation * 2 - BANKER_CONFIG.fluctuation);
 
-    let offer = avg * coeff * fluctuation;
+    let offer = avg * coeff * fluctuation * boxPenalty;
 
     // 兜底：报价不为 0
     if (offer < 1) offer = 1;
