@@ -887,9 +887,28 @@ body::before {
 /* ===== 响应式：手机（≤768px） ===== */
 @media (max-width: 768px) {
 
-  /* ── 整体压缩 ── */
+  /* ── 撑满视口高度 ── */
   .game-container {
     padding: 8px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .center-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .boxes-grid {
+    flex: 1;
+  }
   }
   .header {
     padding: 8px 0 4px;
