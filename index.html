@@ -179,24 +179,13 @@
       document.getElementById('rulesPopup').classList.add('hidden');
     });
 
-    // 音效开关
+    // 音效开关（同时控制 BGM 和音效）
     document.getElementById('soundBtn').addEventListener('click', () => {
       const muted = Audio.toggleMute();
       document.getElementById('soundBtn').textContent = muted ? '🔇 静音' : '🔊 音效';
-      if (!muted) Audio.startBGM();
     });
 
-    // 首次点击页面激活音频 + 启动背景音乐（绕过浏览器自动播放限制）
-    let bgmStarted = false;
-    document.addEventListener('click', () => {
-      if (!bgmStarted) {
-        bgmStarted = true;
-        Audio.getContext();
-        Audio.startBGM();
-      }
-    }, { once: true });
-
-    // 初始化 UI（必须在 game 实例创建之后）
+    // 初始化 UI
     UI.init();
   </script>
 

@@ -8,10 +8,11 @@ const Audio = {
   bgmGain: null,
   bgmPlaying: false,
   bgmInterval: null,
+  bgmPadInterval: null,
   muted: false,
 
-  /** 获取 AudioContext（需用户交互后激活） */
-  getContext() {
+  /** 激活音频上下文（须在用户手势中调用，自动 resume） */
+  activate() {
     if (!this.ctx) {
       this.ctx = new (window.AudioContext || window.webkitAudioContext)();
     }
@@ -24,7 +25,7 @@ const Audio = {
   /** 播放一个音调 */
   playTone(freq, duration, type = 'sine', volume = 0.3) {
     if (this.muted) return;
-    const ctx = this.getContext();
+    const ctx = this.activate();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.type = type;
@@ -37,10 +38,10 @@ const Audio = {
     osc.stop(ctx.currentTime + duration);
   },
 
-  /** 播放一段旋律（音符数组） */
+  /** 播放一段旋律 */
   playMelody(notes, baseTime = 0) {
     if (this.muted) return;
-    const ctx = this.getContext();
+    const ctx = this.activate();
     const now = ctx.currentTime + baseTime;
     notes.forEach(([freq, start, dur, type = 'sine', vol = 0.25]) => {
       const osc = ctx.createOscillator();
@@ -56,10 +57,10 @@ const Audio = {
     });
   },
 
-  /** 噪声效果（用于开箱、撞击） */
+  /** 噪声效果 */
   playNoise(duration, volume = 0.15) {
     if (this.muted) return;
-    const ctx = this.getContext();
+    const ctx = this.activate();
     const bufferSize = ctx.sampleRate * duration;
     const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
     const data = buffer.getChannelData(0);
@@ -78,7 +79,7 @@ const Audio = {
 
   // ========== 游戏音效 ==========
 
-  /** 选专属箱 — 厚重确认音 */
+  /** 选专属箱 */
   playSelectBox() {
     this.playTone(220, 0.15, 'triangle', 0.3);
     setTimeout(() => this.playTone(330, 0.2, 'triangle', 0.25), 100);
@@ -86,14 +87,14 @@ const Audio = {
     this.playNoise(0.1, 0.2);
   },
 
-  /** 开箱 — 揭开 + 叮 */
+  /** 开箱普通金额 */
   playOpenBox() {
     this.playNoise(0.15, 0.2);
     this.playTone(880, 0.08, 'sine', 0.15);
     setTimeout(() => this.playTone(1100, 0.12, 'sine', 0.1), 60);
   },
 
-  /** 开出大额 ≥$100k — 遗憾震惊 descending wah */
+  /** 开出 ≥$100k — 遗憾震惊 descending wah */
   playBigReveal() {
     this.playNoise(0.3, 0.25);
     this.playMelody([
@@ -119,18 +120,17 @@ const Audio = {
     setTimeout(() => this.playNoise(0.15, 0.1), 700);
   },
 
-  /** 银行家报价 — 经典电话铃声 */
+  /** 银行家报价铃声 */
   playBankerCall() {
-    const notes = [
+    this.playMelody([
       [660, 0, 0.25, 'square', 0.1],
       [880, 0.3, 0.25, 'square', 0.1],
       [660, 0.6, 0.25, 'square', 0.1],
       [880, 0.9, 0.25, 'square', 0.1],
-    ];
-    this.playMelody(notes);
+    ]);
   },
 
-  /** 成交 Deal — 胜利上升音 */
+  /** Deal 成交上升 */
   playDeal() {
     this.playMelody([
       [523, 0, 0.2, 'sine', 0.3],
@@ -140,7 +140,7 @@ const Audio = {
     ]);
   },
 
-  /** No Deal — 戏剧性下降 */
+  /** No Deal 下降 */
   playNoDeal() {
     this.playMelody([
       [440, 0, 0.2, 'square', 0.15],
@@ -150,14 +150,14 @@ const Audio = {
     this.playNoise(0.2, 0.1);
   },
 
-  /** 终极抉择 — 心跳紧张音 */
+  /** 终极抉择心跳 */
   playFinalDrum() {
     this.playTone(60, 0.4, 'sine', 0.2);
     setTimeout(() => this.playTone(60, 0.4, 'sine', 0.2), 600);
     setTimeout(() => this.playTone(60, 0.6, 'sine', 0.25), 1200);
   },
 
-  /** 最终开箱 — 大揭示 */
+  /** 最终开箱揭示 */
   playFinalReveal() {
     this.playMelody([
       [523, 0, 0.15, 'sine', 0.3],
@@ -166,9 +166,7 @@ const Audio = {
       [1047, 0.45, 0.15, 'sine', 0.3],
       [1319, 0.6, 0.4, 'sine', 0.35],
     ]);
-    setTimeout(() => {
-      this.playTone(1568, 0.6, 'triangle', 0.25);
-    }, 700);
+    setTimeout(() => this.playTone(1568, 0.6, 'triangle', 0.25), 700);
   },
 
   // ========== 背景音乐 ==========
@@ -178,56 +176,33 @@ const Audio = {
     if (this.bgmPlaying || this.muted) return;
     this.bgmPlaying = true;
 
-    const ctx = this.getContext();
+    const ctx = this.activate();
     this.bgmGain = ctx.createGain();
-    this.bgmGain.gain.setValueAtTime(0.12, ctx.currentTime);
+    this.bgmGain.gain.setValueAtTime(0.15, ctx.currentTime);
     this.bgmGain.connect(ctx.destination);
 
-    // 低音循环（每 4 秒一个乐句）
+    // 低频脉搏（4 秒乐句循环）
     let noteIndex = 0;
-    const bassNotes = [65, 65, 73, 73, 82, 77, 65, 65];
+    const bassNotes = [65.41, 65.41, 73.42, 73.42, 82.41, 77.78, 65.41, 65.41];
 
     const playBass = () => {
       if (!this.bgmPlaying) return;
       const now = ctx.currentTime;
-      [0, 0.5, 1, 1.5].forEach((offset, i) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'triangle';
-        const idx = (noteIndex + i) % bassNotes.length;
-        osc.frequency.setValueAtTime(bassNotes[idx], now + offset);
-        gain.gain.setValueAtTime(0.07, now + offset);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.4);
-        osc.connect(gain);
-        gain.connect(this.bgmGain);
-        osc.start(now + offset);
-        osc.stop(now + offset + 0.4);
+      [0, 0.5, 1, 1.5].forEach((offset) => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = 'triangle';
+        o.frequency.setValueAtTime(bassNotes[(noteIndex++) % bassNotes.length], now + offset);
+        g.gain.setValueAtTime(0.08, now + offset);
+        g.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.35);
+        o.connect(g);
+        g.connect(this.bgmGain);
+        o.start(now + offset);
+        o.stop(now + offset + 0.35);
       });
-      noteIndex += 4;
       this.bgmInterval = setTimeout(playBass, 4000);
     };
     playBass();
-
-    // 氛围和弦（C 小调持续音）
-    const playPad = () => {
-      if (!this.bgmPlaying) return;
-      const now = ctx.currentTime;
-      [130.81, 155.56, 196.00].forEach(f => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(f, now);
-        gain.gain.setValueAtTime(0.025, now);
-        gain.gain.linearRampToValueAtTime(0.025, now + 6);
-        gain.gain.linearRampToValueAtTime(0.001, now + 9);
-        osc.connect(gain);
-        gain.connect(this.bgmGain);
-        osc.start(now);
-        osc.stop(now + 9);
-      });
-    };
-    playPad();
-    this.bgmPadInterval = setInterval(playPad, 9000);
   },
 
   /** 停止背景音乐 */
@@ -237,10 +212,6 @@ const Audio = {
       clearTimeout(this.bgmInterval);
       this.bgmInterval = null;
     }
-    if (this.bgmPadInterval) {
-      clearInterval(this.bgmPadInterval);
-      this.bgmPadInterval = null;
-    }
   },
 
   /** 切换静音 */
@@ -248,6 +219,8 @@ const Audio = {
     this.muted = !this.muted;
     if (this.muted) {
       this.stopBGM();
+    } else {
+      this.startBGM();
     }
     return this.muted;
   }
