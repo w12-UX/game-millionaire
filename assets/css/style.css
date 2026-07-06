@@ -183,6 +183,11 @@ body::before {
 
 .main-area.has-selected .selected-box-area {
   display: flex;
+  position: absolute;
+  top: -4px;
+  left: 0;
+  right: 0;
+  z-index: 10;
 }
 
 .selected-box-label {
@@ -272,6 +277,7 @@ body::before {
   flex-direction: column;
   gap: 14px;
   min-width: 0;
+  position: relative;
 }
 
 /* ===== 箱子网格 ===== */
