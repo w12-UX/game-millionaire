@@ -945,6 +945,12 @@ body::before {
     border-radius: 3px;
     text-align: center;
   }
+  .sidebar-left .prize-item:last-child {
+    grid-column: 3;
+    color: #FFD700;
+    font-weight: 700;
+    text-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
+  }
   }
   .sidebar-left .prize-item.eliminated { font-size: 9px; }
   .sidebar-left .prize-list::-webkit-scrollbar { height: 3px; }
