@@ -153,8 +153,8 @@ const UI = {
     if (state.phase === GAME_PHASE.SELECTING) {
       const ok = game.selectBox(index);
       if (ok) {
-        // 把选中的箱子从网格移到左侧专属展示区
-        const boxEl = this.els.boxesGrid.children[index];
+        // 把选中的箱子从网格移到专属展示区
+        const boxEl = this.els.boxesGrid.querySelector(`.box[data-index="${index}"]`);
         if (boxEl) {
           this.els.selectedBoxSlot.innerHTML = '';
           this.els.selectedBoxSlot.appendChild(boxEl);
@@ -186,7 +186,7 @@ const UI = {
 
   /** 翻转箱子动画并显示金额 */
   flipBox(index, amount) {
-    const boxEl = this.els.boxesGrid.children[index];
+    const boxEl = this.els.boxesGrid.querySelector(`.box[data-index="${index}"]`);
     if (!boxEl) return;
     boxEl.classList.add('flipped');
 
@@ -203,17 +203,19 @@ const UI = {
     setTimeout(() => boxEl.classList.remove('shake'), 400);
   },
 
-  /** 更新所有箱子的状态样式 */
+  /** 更新箱子样式（用 dataset.index 匹配，不受 DOM 移位影响） */
   updateBoxStates() {
     const boxes = game.boxes;
-    this.els.boxesGrid.querySelectorAll('.box').forEach((el, index) => {
+    this.els.boxesGrid.querySelectorAll('.box').forEach((el) => {
+      const idx = parseInt(el.dataset.index);
+      if (isNaN(idx)) return;
       el.className = 'box';
-      if (boxes[index].state === BOX_STATE.SELECTED) {
+      if (boxes[idx].state === BOX_STATE.SELECTED) {
         el.classList.add('selected');
-      } else if (boxes[index].state === BOX_STATE.ELIMINATED) {
+      } else if (boxes[idx].state === BOX_STATE.ELIMINATED) {
         el.classList.add('eliminated');
-        el.classList.add('flipped'); // 保持翻开状态
-      } else if (boxes[index].state === BOX_STATE.FINAL) {
+        el.classList.add('flipped');
+      } else if (boxes[idx].state === BOX_STATE.FINAL) {
         el.classList.add('final');
         el.classList.add('flipped');
       }
