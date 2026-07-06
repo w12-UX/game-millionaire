@@ -903,8 +903,9 @@ body::before {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0;
     min-width: 0;
+    position: relative;
   }
   .sidebar-left, .sidebar-right {
     width: 100%;
@@ -967,7 +968,16 @@ body::before {
   .box.eliminated .box-front { font-size: 10px; }
   .box.selected .box-number { font-size: 19px; }
 
-  .selected-box-area { gap: 8px; padding: 4px 0; }
+  .selected-box-area {
+    position: absolute;
+    top: -2px;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    gap: 8px;
+    padding: 6px 0;
+    background: linear-gradient(180deg, rgba(5,13,26,0.95) 60%, transparent);
+  }
   .selected-box-label { font-size: 11px; }
   .selected-box-slot { width: 60px; height: 60px; padding: 3px; border-radius: 10px; }
   .selected-box-slot .box { padding-top: 5px; }
