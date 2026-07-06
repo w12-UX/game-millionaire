@@ -164,6 +164,9 @@
       document.getElementById('rulesPopup').classList.add('hidden');
     });
 
+    // 挂载游戏事件钩子（桥接 game.js 逻辑 → ui.js 视图）
+    UI.setupGameHooks(game);
+
     // 初始化 UI（必须在 game 实例创建之后）
     UI.init();
   </script>

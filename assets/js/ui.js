@@ -271,56 +271,57 @@ const UI = {
   }
 };
 
-/** ========== 全局事件桥接 ========== */
+/**
+ * 挂载游戏事件钩子（在 game 实例创建后调用）
+ * 将 game.js 的纯逻辑操作与 ui.js 的视图反馈桥接起来
+ */
+UI.setupGameHooks = function(gameInstance) {
+  const game = gameInstance;
 
-// 监听游戏事件（由 game.js 触发，ui.js 响应）
-
-/** 当玩家接受报价后 */
-const origAccept = game.acceptDeal.bind(game);
-game.acceptDeal = function() {
-  const result = origAccept();
-  if (result) {
-    UI.closeAllPopups();
-    setTimeout(() => {
-      UI.updateBoxStates();
-      UI.updateStatus();
-      UI.showResult(result);
-      UI.updateGuide('游戏结束，点击「重新开始」再来一局');
-    }, 300);
-  }
-  return result;
-};
-
-/** 当玩家拒绝报价后 */
-const origReject = game.rejectDeal.bind(game);
-game.rejectDeal = function() {
-  const ok = origReject();
-  if (ok) {
-    UI.closeAllPopups();
-    const state = game.getState();
-    if (state.phase === GAME_PHASE.FINAL_CHOICE) {
-      setTimeout(() => UI.showFinalChoice(), 300);
-      UI.updateGuide('只剩最后两箱，请做出终极抉择');
-    } else {
-      UI.updateGuide('点击箱子完成本轮开箱');
+  const origAccept = game.acceptDeal.bind(game);
+  game.acceptDeal = function() {
+    const result = origAccept();
+    if (result) {
+      UI.closeAllPopups();
+      setTimeout(() => {
+        UI.updateBoxStates();
+        UI.updateStatus();
+        UI.showResult(result);
+        UI.updateGuide('游戏结束，点击「重新开始」再来一局');
+      }, 300);
     }
-    UI.updateStatus();
-  }
-  return ok;
-};
+    return result;
+  };
 
-/** 当玩家做出终极抉择后 */
-const origFinal = game.finalChoice.bind(game);
-game.finalChoice = function(shouldSwap) {
-  const result = origFinal(shouldSwap);
-  if (result) {
-    UI.closeAllPopups();
-    setTimeout(() => {
-      UI.updateBoxStates();
+  const origReject = game.rejectDeal.bind(game);
+  game.rejectDeal = function() {
+    const ok = origReject();
+    if (ok) {
+      UI.closeAllPopups();
+      const state = game.getState();
+      if (state.phase === GAME_PHASE.FINAL_CHOICE) {
+        setTimeout(() => UI.showFinalChoice(), 300);
+        UI.updateGuide('只剩最后两箱，请做出终极抉择');
+      } else {
+        UI.updateGuide('点击箱子完成本轮开箱');
+      }
       UI.updateStatus();
-      UI.showResult(result);
-      UI.updateGuide('游戏结束，点击「重新开始」再来一局');
-    }, 300);
-  }
-  return result;
+    }
+    return ok;
+  };
+
+  const origFinal = game.finalChoice.bind(game);
+  game.finalChoice = function(shouldSwap) {
+    const result = origFinal(shouldSwap);
+    if (result) {
+      UI.closeAllPopups();
+      setTimeout(() => {
+        UI.updateBoxStates();
+        UI.updateStatus();
+        UI.showResult(result);
+        UI.updateGuide('游戏结束，点击「重新开始」再来一局');
+      }, 300);
+    }
+    return result;
+  };
 };
