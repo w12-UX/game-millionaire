@@ -184,10 +184,6 @@ body::before {
 .main-area.has-selected .selected-box-area {
   display: flex;
 }
-.main-area.has-selected .sidebar-left .prize-panel,
-.main-area.has-selected .sidebar-right .status-panel {
-  margin-top: 130px;
-}
 
 .selected-box-label {
   font-size: 13px;
@@ -264,6 +260,13 @@ body::before {
   100% { transform: scale(1); opacity: 1; }
 }
 .main-area {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.main-area-inner {
   display: flex;
   gap: 20px;
   align-items: flex-start;
@@ -840,6 +843,9 @@ body::before {
     padding: 16px;
   }
   .main-area {
+  .main-area-inner {
+    flex-direction: column;
+  }
     flex-direction: column;
     gap: 12px;
   }
@@ -916,6 +922,9 @@ body::before {
     flex-direction: column;
   }
   .main-area {
+  .main-area-inner {
+    flex-direction: column;
+  }
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -947,10 +956,6 @@ body::before {
   .guide-bar { padding: 2px 0; margin: 0; }
   .guide-text { font-size: 11px; padding: 2px 10px; }
 
-  .main-area.has-selected .sidebar-left .prize-panel,
-  .main-area.has-selected .sidebar-right .status-panel {
-    margin-top: 0;
-  }
   .sidebar-left .prize-panel { padding: 6px 10px; }
   .sidebar-left .prize-panel h3 { font-size: 10px; margin-bottom: 4px; letter-spacing: 1px; }
   .sidebar-left .prize-list {
