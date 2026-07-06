@@ -635,7 +635,7 @@ body::before {
   color: #f7d875;
   background: rgba(212, 175, 55, 0.06);
 }
-n.prize-jackpot {
+.prize-jackpot {
   text-align: center;
   font-size: 20px;
   font-weight: 900;
