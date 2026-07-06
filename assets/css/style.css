@@ -49,7 +49,7 @@ body::before {
 /* ===== 标题栏 ===== */
 .header {
   text-align: center;
-  padding: 30px 0 20px;
+  padding: 18px 0 10px;
   position: relative;
 }
 
@@ -58,12 +58,12 @@ body::before {
   display: block;
   width: 60%;
   height: 1px;
-  margin: 15px auto 0;
+  margin: 10px auto 0;
   background: linear-gradient(90deg, transparent, #d4af37, transparent);
 }
 
 .header h1 {
-  font-size: 42px;
+  font-size: 32px;
   font-weight: 900;
   letter-spacing: 4px;
   background: linear-gradient(180deg, #f7d875 0%, #d4af37 50%, #b8962c 100%);
@@ -75,11 +75,11 @@ body::before {
 }
 
 .header .subtitle {
-  font-size: 14px;
+  font-size: 12px;
   color: rgba(212, 175, 55, 0.6);
   letter-spacing: 6px;
   text-transform: uppercase;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 /* ===== 控制按钮行 ===== */
@@ -87,7 +87,7 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0 20px;
+  padding: 6px 0 10px;
 }
 
 .btn {
@@ -130,16 +130,16 @@ body::before {
 /* ===== 新手引导 ===== */
 .guide-bar {
   text-align: center;
-  padding: 12px 0;
-  margin-bottom: 10px;
+  padding: 6px 0;
+  margin-bottom: 6px;
 }
 
 .guide-text {
   display: inline-block;
-  font-size: 16px;
+  font-size: 14px;
   color: #f7d875;
   letter-spacing: 1px;
-  padding: 8px 24px;
+  padding: 5px 18px;
   border: 1px solid rgba(212, 175, 55, 0.2);
   border-radius: 30px;
   background: rgba(212, 175, 55, 0.05);
@@ -158,7 +158,7 @@ body::before {
 /* ===== 主体布局：箱子区 + 侧边栏 ===== */
 .main-area {
   display: flex;
-  gap: 24px;
+  gap: 16px;
   align-items: flex-start;
 }
 
@@ -166,13 +166,12 @@ body::before {
 .boxes-grid {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 14px;
-  padding: 20px;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 8px;
+  padding: 12px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(212, 175, 55, 0.1);
-  border-radius: 16px;
-  min-height: 400px;
+  border-radius: 12px;
 }
 
 /* ===== 单个箱子 ===== */
@@ -200,7 +199,7 @@ body::before {
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  border-radius: 12px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -217,7 +216,7 @@ body::before {
 }
 
 .box-number {
-  font-size: 24px;
+  font-size: 18px;
   color: #d4af37;
   text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
 }
@@ -235,7 +234,7 @@ body::before {
   background: linear-gradient(145deg, #0d1a30, #050d1a);
   border: 2px solid #d4af37;
   transform: rotateY(180deg);
-  font-size: 14px;
+  font-size: 11px;
   color: #f7d875;
   text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
 }
@@ -251,23 +250,23 @@ body::before {
 
 /* 选中状态（专属箱子） */
 .box.selected {
-  margin-bottom: 28px;              /* 为底部「★ 我的」标签预留空间 */
+  margin-bottom: 22px;              /* 为底部「★ 我的」标签预留空间 */
 }
 
 .box.selected .box-inner {
-  border-radius: 30px 12px 12px 30px;  /* 左半圆 + 右圆角胶囊效果 */
+  border-radius: 22px 8px 8px 22px;  /* 左半圆 + 右圆角胶囊效果 */
 }
 
 .box.selected .box-front {
   border-color: #FFD700;
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.5),
-              0 0 60px rgba(255, 215, 0, 0.2),
-              inset 0 0 25px rgba(255, 215, 0, 0.1);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5),
+              0 0 40px rgba(255, 215, 0, 0.2),
+              inset 0 0 15px rgba(255, 215, 0, 0.1);
   background: linear-gradient(135deg, #FFD700, #DAA520, #B8860B);
 }
 
 .box.selected .box-number {
-  font-size: 28px;
+  font-size: 22px;
   color: #1a1a2e;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
 }
@@ -275,18 +274,18 @@ body::before {
 .box.selected::after {
   content: '★ 我的';
   position: absolute;
-  bottom: -24px;
+  bottom: -20px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: #FFD700;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
-  letter-spacing: 2px;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  letter-spacing: 1px;
   white-space: nowrap;
   background: rgba(0, 0, 0, 0.5);
-  padding: 2px 12px;
-  border-radius: 10px;
+  padding: 1px 10px;
+  border-radius: 8px;
   border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
@@ -320,34 +319,34 @@ body::before {
 
 /* ===== 侧边栏（奖金池 + 状态） ===== */
 .sidebar {
-  width: 240px;
+  width: 190px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
 }
 
 /* 状态信息面板 */
 .status-panel {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(212, 175, 55, 0.15);
-  border-radius: 12px;
-  padding: 16px;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .status-panel h3 {
   color: #d4af37;
-  font-size: 13px;
+  font-size: 11px;
   letter-spacing: 2px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   text-align: center;
 }
 
 .status-item {
   display: flex;
   justify-content: space-between;
-  padding: 6px 0;
-  font-size: 14px;
+  padding: 4px 0;
+  font-size: 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -368,34 +367,34 @@ body::before {
 .prize-panel {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(212, 175, 55, 0.15);
-  border-radius: 12px;
-  padding: 16px;
+  border-radius: 10px;
+  padding: 10px;
   flex: 1;
 }
 
 .prize-panel h3 {
   color: #d4af37;
-  font-size: 13px;
+  font-size: 11px;
   letter-spacing: 2px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   text-align: center;
 }
 
 .prize-list {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  max-height: 500px;
+  gap: 2px;
+  max-height: 420px;
   overflow-y: auto;
 }
 
 .prize-item {
-  padding: 5px 12px;
-  font-size: 13px;
+  padding: 3px 8px;
+  font-size: 11px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: rgba(255, 255, 255, 0.8);
-  border-radius: 4px;
+  border-radius: 3px;
   transition: all 0.3s;
 }
 
@@ -581,8 +580,8 @@ body::before {
 /* ===== 底部 ===== */
 .footer {
   text-align: center;
-  padding: 30px 0 10px;
-  font-size: 12px;
+  padding: 10px 0 5px;
+  font-size: 11px;
   color: rgba(255, 255, 255, 0.15);
 }
 

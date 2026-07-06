@@ -33,6 +33,7 @@ const UI = {
       finalAmount: document.getElementById('finalAmount'),
       swapBtn: document.getElementById('swapBtn'),
       keepBtn: document.getElementById('keepBtn'),
+      resultOtherBoxRow: document.getElementById('resultOtherBoxRow'),
       resultPopup: document.getElementById('resultPopup'),
       resultTitle: document.getElementById('resultTitle'),
       resultEarned: document.getElementById('resultEarned'),
@@ -289,12 +290,13 @@ const UI = {
       this.els.resultTitle.textContent = '✅ 成交！';
       this.els.resultEarned.textContent = `你获得了: ${this.formatAmount(result.earned)}`;
       this.els.resultPlayerBox.textContent = `你的箱子实际金额: ${this.formatAmount(result.playerBoxAmount)}`;
-      this.els.resultOtherBox.textContent = '';
+      this.els.resultOtherBoxRow.style.display = 'none';
       this.els.resultCouldHave.textContent = `最高可中: ${this.formatAmount(result.couldHaveWon)}`;
     } else {
       this.els.resultTitle.textContent = result.swapped ? '🔄 你选择了交换' : '📦 你选择了保留';
       this.els.resultEarned.textContent = `最终获得: ${this.formatAmount(result.earned)}`;
       this.els.resultPlayerBox.textContent = `你的箱子: ${this.formatAmount(result.playerBoxAmount)}`;
+      this.els.resultOtherBoxRow.style.display = '';
       this.els.resultOtherBox.textContent = `另一箱子: ${this.formatAmount(result.otherBoxAmount)}`;
       this.els.resultCouldHave.textContent = `最高可中: ${this.formatAmount(result.couldHaveWon)}`;
     }
@@ -302,7 +304,7 @@ const UI = {
 
   /** 关闭所有弹窗 */
   closeAllPopups() {
-    document.querySelectorAll('.popup').forEach(p => {
+    document.querySelectorAll('.popup-overlay').forEach(p => {
       p.classList.add('hidden');
       p.classList.remove('pop-in');
     });
