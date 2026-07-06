@@ -452,21 +452,23 @@ body::before {
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
 }
 
-/* 「★ 我的」标签完全内嵌在箱子底部边界内 */
+/* 「★ 我的」胶囊标签完全内嵌在箱子底部 */
 .box.selected::after {
-  content: '★';
+  content: '★ 我的';
   position: absolute;
   bottom: 1px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 7px;
+  font-weight: 600;
   color: #5a3e00;
-  letter-spacing: 0;
-  background: rgba(255, 215, 0, 0.7);
-  padding: 1px 5px;
-  border-radius: 4px;
+  letter-spacing: 0.5px;
+  background: rgba(255, 215, 0, 0.75);
+  padding: 1px 6px;
+  border-radius: 999px;
   z-index: 2;
-  line-height: 1;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
 /* ===== 专属箱展示区（适配固定高度箱子） ===== */
@@ -783,7 +785,7 @@ body::before {
 /* ===== 底部 ===== */
 .footer {
   text-align: center;
-  padding: 10px 0 5px;
+  padding: 18px 0 20px;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.15);
 }
