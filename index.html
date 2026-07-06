@@ -186,10 +186,18 @@
       if (!muted) Audio.startBGM();
     });
 
+    // 首次点击页面激活音频 + 启动背景音乐（绕过浏览器自动播放限制）
+    let bgmStarted = false;
+    document.addEventListener('click', () => {
+      if (!bgmStarted) {
+        bgmStarted = true;
+        Audio.getContext();
+        Audio.startBGM();
+      }
+    }, { once: true });
+
     // 初始化 UI（必须在 game 实例创建之后）
     UI.init();
-    // 启动背景音乐
-    Audio.startBGM();
   </script>
 
 </body>

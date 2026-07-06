@@ -147,58 +147,61 @@ const Audio = {
 
   // ========== 背景音乐 ==========
 
-  /** 开始背景音乐（循环悬疑氛围） */
+  /** 开始背景音乐（综艺悬疑氛围，循环播放） */
   startBGM() {
     if (this.bgmPlaying || this.muted) return;
     this.bgmPlaying = true;
 
     const ctx = this.getContext();
     this.bgmGain = ctx.createGain();
-    this.bgmGain.gain.setValueAtTime(0.04, ctx.currentTime);
+    this.bgmGain.gain.setValueAtTime(0.12, ctx.currentTime);
     this.bgmGain.connect(ctx.destination);
 
-    // 低音脉搏（每 2 秒一个循环）
+    // 低音循环（每 4 秒一个乐句）
     let noteIndex = 0;
-    const bassNotes = [65, 65, 73, 73, 82, 77, 65, 65]; // C2, C2, D2, D2, E2, Eb2, C2, C2
+    const bassNotes = [65, 65, 73, 73, 82, 77, 65, 65];
 
     const playBass = () => {
       if (!this.bgmPlaying) return;
       const now = ctx.currentTime;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(bassNotes[noteIndex % bassNotes.length], now);
-      gain.gain.setValueAtTime(0.03, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
-      osc.connect(gain);
-      gain.connect(this.bgmGain);
-      osc.start(now);
-      osc.stop(now + 1.8);
-      noteIndex++;
-
-      // 每 2 秒一个低音
-      this.bgmInterval = setTimeout(playBass, 2000);
+      [0, 0.5, 1, 1.5].forEach((offset, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        const idx = (noteIndex + i) % bassNotes.length;
+        osc.frequency.setValueAtTime(bassNotes[idx], now + offset);
+        gain.gain.setValueAtTime(0.07, now + offset);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.4);
+        osc.connect(gain);
+        gain.connect(this.bgmGain);
+        osc.start(now + offset);
+        osc.stop(now + offset + 0.4);
+      });
+      noteIndex += 4;
+      this.bgmInterval = setTimeout(playBass, 4000);
     };
     playBass();
 
-    // 持续氛围垫音
+    // 氛围和弦（C 小调持续音）
     const playPad = () => {
       if (!this.bgmPlaying) return;
       const now = ctx.currentTime;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(130, now); // C3
-      gain.gain.setValueAtTime(0.015, now);
-      gain.gain.linearRampToValueAtTime(0.015, now + 4);
-      gain.gain.linearRampToValueAtTime(0.001, now + 8);
-      osc.connect(gain);
-      gain.connect(this.bgmGain);
-      osc.start(now);
-      osc.stop(now + 8);
+      [130.81, 155.56, 196.00].forEach(f => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(f, now);
+        gain.gain.setValueAtTime(0.025, now);
+        gain.gain.linearRampToValueAtTime(0.025, now + 6);
+        gain.gain.linearRampToValueAtTime(0.001, now + 9);
+        osc.connect(gain);
+        gain.connect(this.bgmGain);
+        osc.start(now);
+        osc.stop(now + 9);
+      });
     };
     playPad();
-    setInterval(playPad, 8000);
+    this.bgmPadInterval = setInterval(playPad, 9000);
   },
 
   /** 停止背景音乐 */
@@ -207,6 +210,10 @@ const Audio = {
     if (this.bgmInterval) {
       clearTimeout(this.bgmInterval);
       this.bgmInterval = null;
+    }
+    if (this.bgmPadInterval) {
+      clearInterval(this.bgmPadInterval);
+      this.bgmPadInterval = null;
     }
   },
 
