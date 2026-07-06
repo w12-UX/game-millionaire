@@ -39,9 +39,9 @@ body::before {
 
 /* ===== 布局 ===== */
 .game-container {
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 24px 28px;
   position: relative;
   z-index: 1;
 }
@@ -49,7 +49,7 @@ body::before {
 /* ===== 标题栏 ===== */
 .header {
   text-align: center;
-  padding: 18px 0 10px;
+  padding: 22px 0 14px;
   position: relative;
 }
 
@@ -58,14 +58,14 @@ body::before {
   display: block;
   width: 60%;
   height: 1px;
-  margin: 10px auto 0;
+  margin: 12px auto 0;
   background: linear-gradient(90deg, transparent, #d4af37, transparent);
 }
 
 .header h1 {
-  font-size: 32px;
+  font-size: 40px;
   font-weight: 900;
-  letter-spacing: 4px;
+  letter-spacing: 6px;
   background: linear-gradient(180deg, #f7d875 0%, #d4af37 50%, #b8962c 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -75,11 +75,11 @@ body::before {
 }
 
 .header .subtitle {
-  font-size: 12px;
+  font-size: 14px;
   color: rgba(212, 175, 55, 0.6);
-  letter-spacing: 6px;
+  letter-spacing: 8px;
   text-transform: uppercase;
-  margin-top: 4px;
+  margin-top: 5px;
 }
 
 /* ===== 控制按钮行 ===== */
@@ -261,7 +261,7 @@ body::before {
 }
 .main-area {
   display: flex;
-  gap: 14px;
+  gap: 20px;
   align-items: flex-start;
 }
 
@@ -270,7 +270,7 @@ body::before {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
   min-width: 0;
 }
 
@@ -279,9 +279,9 @@ body::before {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-auto-rows: 72px;
-  gap: 5px;
-  padding: 8px;
+  grid-auto-rows: 100px;
+  gap: 7px;
+  padding: 12px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(212, 175, 55, 0.1);
   border-radius: 10px;
@@ -299,12 +299,12 @@ body::before {
   cursor: pointer;
   position: relative;
   perspective: 600px;
-  padding-top: 8px;
+  padding-top: 10px;
 }
 
 .box-inner {
   width: 100%;
-  height: calc(100% - 8px);          /* 减去提手空间，保持整体 72px */
+  height: calc(100% - 10px);
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.5s ease;
@@ -367,7 +367,7 @@ body::before {
 }
 
 .box-number {
-  font-size: 16px;
+  font-size: 22px;
   color: #d4af37;
   text-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
   z-index: 1;
@@ -535,14 +535,14 @@ body::before {
 
 /* ===== 侧边栏（左：奖金池 / 右：状态） ===== */
 .sidebar-left {
-  width: 210px;
-  min-width: 170px;
+  width: 280px;
+  min-width: 220px;
   flex-shrink: 0;
 }
 
 .sidebar-right {
-  width: 200px;
-  min-width: 160px;
+  width: 250px;
+  min-width: 200px;
   flex-shrink: 0;
 }
 
@@ -550,23 +550,23 @@ body::before {
 .status-panel {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(212, 175, 55, 0.15);
-  border-radius: 10px;
-  padding: 14px 16px;
+  border-radius: 12px;
+  padding: 18px 20px;
 }
 
 .status-panel h3 {
   color: #d4af37;
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 2px;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
   text-align: center;
 }
 
 .status-item {
   display: flex;
   justify-content: space-between;
-  padding: 6px 0;
-  font-size: 13px;
+  padding: 8px 0;
+  font-size: 15px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -587,32 +587,32 @@ body::before {
 .prize-panel {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(212, 175, 55, 0.15);
-  border-radius: 10px;
-  padding: 14px 16px;
+  border-radius: 12px;
+  padding: 18px 20px;
   flex: 1;
 }
 
 .prize-panel h3 {
   color: #d4af37;
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 2px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   text-align: center;
 }
 
 .prize-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3px 10px;
-  max-height: 440px;
+  gap: 4px 14px;
+  max-height: 500px;
   overflow-y: auto;
 }
 
 .prize-item {
   display: flex;
   justify-content: center;
-  padding: 3px 6px;
-  font-size: 12px;
+  padding: 5px 8px;
+  font-size: 13px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: rgba(255, 255, 255, 0.8);
